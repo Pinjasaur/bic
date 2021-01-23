@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+
+# Strict settings
+set -o errexit
+set -o pipefail
+set -o nounset
+
+# Magic variables
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+__file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
+__base="$(basename "${__file}" .sh)"
+
+# shellcheck disable=SC1091,SC1090
+source "${__dir}"/lib/mo
+
+PANDOC_EXTS="+autolink_bare_uris"
+PANDOC_ARGS="-f markdown${PANDOC_EXTS} -t html5 --columns 1000 --no-highlight --email-obfuscation=none"
+
+# Print out usage information
+usage() {
+  cat <<HEREDOC
+Usage:
+  ${__base} [<arguments>]
+  Builds a static site (blog) from Markdown files.
+
+Options:
+  -h --help  Show this.
+HEREDOC
+}
+
+# slug-ify a string, modified from: https://blog.codeselfstudy.com/blog/how-to-slugify-strings-in-bash/
+slugify() {
+  echo "${1:-}" | sed -e 's/[^[:alnum:]]/-/g' | tr -s '-' | tr '[:upper:]' '[:lower:]'
+}
+
+titlecase() {
+  cat
+}
+
+html_escape() {
+  echo "${@}"
+}
+
+# ---
+
+build_pages() {
+  [[ -d "${BASE_DIR}"/pages ]] && for file in "${BASE_DIR}"/pages/*.md; do
+    echo "$file"
+    local filename
+    filename="$(basename "${file}")"
+
+    # shellcheck disable=SC2086 # more double quotes goes poorly with Pandoc
+    title="$(head -n 1 < "${file}" | sed -E 's/^# //' | titlecase)" \
+    body="$(pandoc ${PANDOC_ARGS} <(tail -n +2 "${file}"))" \
+    mo < "${BASE_DIR}"/page.html > "${BASE_DIR}/build/${filename%.md}.html"
+  done
+}
+
+build_posts() {
+  [[ -d "${BASE_DIR}"/posts ]] && for file in "${BASE_DIR}"/posts/*.md; do
+    echo "$file"
+    local filename filename_sans_id
+    filename="$(basename "${file}")"
+    filename_sans_id="$(echo "${filename}" | sed -E 's/^[0-9]+-//')"
+
+    # shellcheck disable=SC2086 # more double quotes goes poorly with Pandoc
+    title="$(head -n 1 < "${file}" | sed -E 's/^# //' | titlecase)" \
+    body="$(pandoc ${PANDOC_ARGS} <(tail -n +2 "${file}"))" \
+    date="$(date -r "${file}" "+%F")" \
+    slug="$(slugify "${filename_sans_id%.md}")" \
+    id="${filename%-${filename_sans_id}}" \
+    mo < "${BASE_DIR}"/entry.html > "${BASE_DIR}/build/${filename_sans_id%.md}.html"
+  done
+}
+
+build_drafts() {
+  [[ -d "${BASE_DIR}"/drafts ]] && for file in "${BASE_DIR}"/drafts/*.md; do
+    echo "$file"
+    local filename filename_sans_id
+    filename="$(basename "${file}")"
+    filename_sans_id="$(echo "${filename}" | sed -E 's/^[0-9]+-//')"
+    mkdir -p "${BASE_DIR}"/build/drafts
+
+    # shellcheck disable=SC2086 # more double quotes goes poorly with Pandoc
+    title="$(head -n 1 < "${file}" | sed -E 's/^# //' | titlecase)" \
+    body="$(pandoc ${PANDOC_ARGS} <(tail -n +2 "${file}"))" \
+    date="$(date -r "${file}" "+%F")" \
+    slug="$(slugify "${filename_sans_id%.md}")" \
+    id="${filename%-${filename_sans_id}}" \
+    mo < "${BASE_DIR}"/entry.html > "${BASE_DIR}/build/drafts/${filename_sans_id%.md}.html"
+  done
+}
+
+build_static() {
+  [[ -d "${BASE_DIR}"/static ]] && cp -a "${BASE_DIR}"/static/. "${BASE_DIR}"/build
+}
+
+build() {
+  BASE_DIR="${1:-$__dir}"
+  echo "BASE_DIR: ${BASE_DIR}"
+
+  [[ -d "${BASE_DIR}"/build ]] && rm -rf "${BASE_DIR}"/build
+  mkdir -p "${BASE_DIR}"/build
+
+  build_pages
+  build_posts
+  build_drafts
+  # build_index
+  build_static
+
+  # exit
+}
+
+# Drive it
+main() {
+  # Parse arguments
+  if [[ "${1:-}" =~ ^-h|--help$ ]]; then
+    usage
+  else
+    build "${1:-}"
+  fi
+}
+
+# Call it
+main "${@:-}"
