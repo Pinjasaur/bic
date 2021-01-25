@@ -8,9 +8,19 @@
 - `id`, the leading number of filename (maybe use hashids?)
 - `body`, converted Markdown to HTML contents (sans title)
 
+What whould be escaped? slugified? title-cased?
+
+Excerpt? Description (to fill `meta` tag`?)?
+
 The naming pattern of pages, posts, and drafts is critical:
 
 - Starts with a digit sequence. Recommend 3 or 4 for Future Proof&trade;.
     - This starts at the _highest_ number and decrements for each post.
     - Otherwise, posts will be listest out of order.
 - Filename after the leading digit will be used to create the slug.
+
+`.env` support?
+
+- `{{SITE_TITLE}}` e.g., `My Cool Site`
+- `{{SITE_URL}}` e.g., `https://mycool.site`
+- `{{DATE_FORMAT}}` whatever is passed to `date`

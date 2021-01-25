@@ -1,6 +1,11 @@
+<div align="center">
+  <img width="256" src=".github/bic.png" alt="bic">
+</div>
+
+
 # bic
 
-Minimal static site (blog) generator, written in bash.
+Opinionated minimal static site (blog) generator, written in bash.
 
 ## Getting Started
 
@@ -9,7 +14,8 @@ mkdir {static,pages,posts,drafts}
 touch {index,entry}.html
 ```
 
-The _bare minimum_ is `pages/` OR `posts/` AND `index.html` + `entry.html`.
+The _bare minimum_ is (`pages/` + `page.html`) OR (`posts/` + `entry.html`) AND
+`index.html`.
 
 ## Docker
 
