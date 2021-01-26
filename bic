@@ -5,7 +5,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-# Magic variables
+# "Magic" variables
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 __file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
 __base="$(basename "${__file}" .sh)"
@@ -16,7 +16,7 @@ source "${__dir}"/lib/mo
 # Based on https://github.com/davidmerfield/Blot/blob/03a99428e29b8ff5ecde09a9abf7011d38a64d93/app/build/converters/markdown/convert.js
 # Full extensions: https://pandoc.org/MANUAL.html#extensions
 PANDOC_EXTS="+autolink_bare_uris+gfm_auto_identifiers+task_lists"
-PANDOC_ARGS=(-f markdown"${PANDOC_EXTS}" -t html5 --columns 1000 --no-highlight --email-obfuscation=none)
+PANDOC_ARGS=(-f markdown"${PANDOC_EXTS:-}" -t html5 --columns 1000 --no-highlight --email-obfuscation=none)
 
 # Print out usage information
 usage() {
@@ -48,31 +48,24 @@ slugify() {
   echo "${1:-}" | sed -e 's/[^[:alnum:]]/-/g' | tr -s '-' | tr '[:upper:]' '[:lower:]'
 }
 
-titlecase() {
-  cat
-  # echo "${1}"
-}
-
 html_escape() {
-  echo "${1}"
+  echo "${1:-}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&#39;/g'
 }
 
-# TODO: html escape + titlecase
 mk_title() {
-  head -n 1 < "${1}" | sed -E 's/^# //'
+  html_escape "$(head -n 1 < "${1}" | sed -E 's/^# //')"
 }
 
 mk_body() {
-  pandoc "${PANDOC_ARGS[@]}" <(tail -n +2 "${1}") || fatal "Pandoc error"
+  pandoc "${PANDOC_ARGS[@]}" <(tail -n +2 "${1}")
 }
 
 mk_slug() {
   slugify "${1}"
 }
 
-# TODO: config-driven format
 mk_date() {
-  date -r "${1}" "+%F"
+  TZ="${TIMEZONE}" date -r "${1}" "${DATE_FORMAT}"
 }
 
 # TODO: hashids, what should be the salt?
@@ -82,21 +75,31 @@ mk_id() {
 
 # ---
 
+# `source` a file: https://stackoverflow.com/a/30969768
+src() {
+  # set -o allexport # enable exporting (even if not specified in file)
+  # shellcheck disable=SC1090
+  source "${1}"
+  # set +o allexport # disable
+}
+
 build_pages() {
   ALL_PAGES=()
   [[ -d "${SRC_DIR}"/pages ]] && for page in "${SRC_DIR}"/pages/*.md; do
     log "Building page: ${page}"
     ALL_PAGES+=("${page}")
-    local filename
+    local filename slug
     filename="$(basename "${page}")"
+
 
     (
       title="$(mk_title "${page}")"
       body="$(mk_body "${page}")"
-      export title body
+      slug="$(slugify "${filename%.md}")"
+      export title body slug
       mo \
         < "${SRC_DIR}"/page.html \
-        > "${BUILD_DIR}/${filename%.md}.html"
+        > "${DEST_DIR}/${slug}.html"
     )
   done
   unset page
@@ -120,7 +123,7 @@ build_posts() {
       export title body date slug id
       mo \
         < "${SRC_DIR}"/entry.html \
-        > "${BUILD_DIR}/${filename_sans_id%.md}.html"
+        > "${DEST_DIR}/${filename_sans_id%.md}.html"
     )
   done
   unset post
@@ -145,7 +148,7 @@ build_drafts() {
       export title body date slug id
       mo \
         < "${SRC_DIR}"/entry.html \
-        > "${BUILD_DIR}/drafts/${filename_sans_id%.md}.html"
+        > "${DEST_DIR}/drafts/${filename_sans_id%.md}.html"
     )
   done
   unset draft
@@ -173,31 +176,83 @@ build_index() {
     export __index title
     mo \
       < "${SRC_DIR}"/index.html \
-      > "${BUILD_DIR}"/index.html
+      > "${DEST_DIR}"/index.html
+  )
+}
+
+build_sitemap() {
+  log "Building sitemap.xml"
+
+  local slugs
+  slugs=()
+
+  for page in "${ALL_PAGES[@]}"; do
+    local filename filename_sans_id title date slug id
+    filename="$(basename "${page}")"
+    filename_sans_id="$(echo "${filename}" | sed -E 's/^[0-9]+-//')"
+    slug="$(mk_slug "${filename_sans_id%.md}")"
+    slugs+=("$(html_escape "${slug}")")
+  done
+
+    for post in "${ALL_POSTS[@]}"; do
+    local filename filename_sans_id title date slug id
+    filename="$(basename "${post}")"
+    filename_sans_id="$(echo "${filename}" | sed -E 's/^[0-9]+-//')"
+    slug="$(mk_slug "${filename_sans_id%.md}")"
+    slugs+=("$(html_escape "${slug}")")
+  done
+
+  (
+    export slugs
+    mo \
+      < "${SRC_DIR}"/sitemap.xml \
+      > "${DEST_DIR}"/sitemap.xml
+  )
+  unset slugs
+}
+
+build_robots() {
+  log "Building robots.txt"
+
+  (
+    mo \
+      < "${SRC_DIR}"/robots.txt \
+      > "${DEST_DIR}"/robots.txt
   )
 }
 
 build_static() {
-  [[ -d "${SRC_DIR}"/static ]] && cp -a "${SRC_DIR}"/static/. "${SRC_DIR}"/build
+  [[ -d "${SRC_DIR}"/static ]] && cp -a "${SRC_DIR}"/static/. "${DEST_DIR}"
 }
 
 build() {
+  src "${__dir}"/.env && log "Application .env sourced"
   SRC_DIR="${1:-$__dir}"
-  BUILD_DIR="${SRC_DIR}/build"
+  # Only source if it's actually custom
+  [[ "${SRC_DIR}" != "${__dir}" ]] && [[ -f "${SRC_DIR}"/.env ]] && src "${SRC_DIR}"/.env && log "Custom .env sourced"
+  DEST_DIR="${SRC_DIR}/${BUILD_DIR:-build}"
   log "Using source directory: ${SRC_DIR}"
 
-  [[ -d "${SRC_DIR}/pages" && -f "${SRC_DIR}/page.html"  ]] || warn "pages/ + page.html for pages"
-  [[ -d "${SRC_DIR}/posts" && -f "${SRC_DIR}/entry.html" ]] || warn "posts/ + entry.html for posts"
-  [[ -f "${SRC_DIR}/index.html" ]] || fatal "index.html required"
+  [[ -d "${SRC_DIR}"/pages && -f "${SRC_DIR}"/page.html  ]] || warn "pages/ + page.html for pages"
+  [[ -d "${SRC_DIR}"/posts && -f "${SRC_DIR}"/entry.html ]] || warn "posts/ + entry.html for posts"
+  [[ -f "${SRC_DIR}"/index.html ]]  || fatal "index.html required"
+  [[ -f "${SRC_DIR}"/sitemap.xml ]] || fatal "sitemap.xml required"
+  [[ -f "${SRC_DIR}"/robots.txt ]]  || fatal "robots.txt required"
+  # [[ -f "${SRC_DIR}"/feed.rss ]]    || fatal "feed.rss required"
 
-  [[ -d "${BUILD_DIR}" ]] && rm -rf "${BUILD_DIR}"
-  mkdir -p "${BUILD_DIR}" && log "Created build directory: ${BUILD_DIR}"
+  [[ -d "${DEST_DIR}" ]] && rm -rf "${DEST_DIR}"
+  mkdir -p "${DEST_DIR}" && log "Created build directory: ${DEST_DIR}"
+
+  SITE_AUTHOR="$(html_escape "${SITE_AUTHOR}")"
+  SITE_TITLE="$(html_escape "${SITE_TITLE}")"
 
   build_pages
   build_posts
   build_drafts
   build_index
-  # build_sitemap
+  build_sitemap
+  build_robots
+  # TODO: build feed (use -R with `date` for RFC 822 compliance)
   # build_feed
   build_static
 }

@@ -11,6 +11,7 @@
 What whould be escaped? slugified? title-cased?
 
 Excerpt? Description (to fill `meta` tag`?)?
+https://mgdm.net/weblog/htmlq/
 
 The naming pattern of pages, posts, and drafts is critical:
 
@@ -24,3 +25,4 @@ The naming pattern of pages, posts, and drafts is critical:
 - `{{SITE_TITLE}}` e.g., `My Cool Site`
 - `{{SITE_URL}}` e.g., `https://mycool.site`
 - `{{DATE_FORMAT}}` whatever is passed to `date`
+- `{{TIMEZONE}}` e.g., `US/Central`
