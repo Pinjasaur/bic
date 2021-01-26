@@ -31,6 +31,12 @@ Run (local develop):
 $ docker run --rm -it -v $PWD/../bic-example:/src -v $PWD:/app --entrypoint bash bic:local
 ```
 
+Run (just build):
+
+```bash
+$ docker run --rm -v $PWD/../bic-example:/src bic:local
+```
+
 Local server:
 
 ```bash
