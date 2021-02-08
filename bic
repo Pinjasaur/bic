@@ -91,7 +91,6 @@ build_pages() {
     local filename slug
     filename="$(basename "${page}")"
 
-
     (
       title="$(mk_title "${page}")"
       body="$(mk_body "${page}")"
@@ -181,6 +180,7 @@ build_index() {
 }
 
 build_sitemap() {
+  [[ ! -f "${SRC_DIR}/sitemap.xml" ]] && return
   log "Building sitemap.xml"
 
   local slugs
@@ -194,7 +194,7 @@ build_sitemap() {
     slugs+=("$(html_escape "${slug}")")
   done
 
-    for post in "${ALL_POSTS[@]}"; do
+  for post in "${ALL_POSTS[@]}"; do
     local filename filename_sans_id title date slug id
     filename="$(basename "${post}")"
     filename_sans_id="$(echo "${filename}" | sed -E 's/^[0-9]+-//')"
@@ -212,6 +212,7 @@ build_sitemap() {
 }
 
 build_robots() {
+  [[ ! -f "${SRC_DIR}/robots.txt" ]] && return
   log "Building robots.txt"
 
   (
@@ -221,7 +222,35 @@ build_robots() {
   )
 }
 
+build_feed() {
+  [[ ! -f "${SRC_DIR}/feed.rss" ]] && return
+  log "Building feed.rss"
+
+  local __feed
+  __feed=""
+  for post in "${ALL_POSTS[@]}"; do
+    local filename filename_sans_id title body date slug id
+    filename="$(basename "${post}")"
+    filename_sans_id="$(echo "${filename}" | sed -E 's/^[0-9]+-//')"
+    title="$(mk_title "${post}")"
+    body="$(mk_body "${post}")"
+    date="$(DATE_FORMAT="-R" mk_date "${post}")"
+    slug="$(mk_slug "${filename_sans_id%.md}")"
+    id="$(mk_id "${filename}" "${filename_sans_id}")"
+    __feed+="$(mo < "${SRC_DIR}"/__feed.rss)"
+    __feed+=$'\n'
+  done
+
+  (
+    export __feed
+    mo \
+      < "${SRC_DIR}"/feed.rss \
+      > "${DEST_DIR}"/feed.rss
+  )
+}
+
 build_static() {
+  log "Building /static -> /"
   [[ -d "${SRC_DIR}"/static ]] && cp -a "${SRC_DIR}"/static/. "${DEST_DIR}"
 }
 
@@ -236,9 +265,9 @@ build() {
   [[ -d "${SRC_DIR}"/pages && -f "${SRC_DIR}"/page.html  ]] || warn "pages/ + page.html for pages"
   [[ -d "${SRC_DIR}"/posts && -f "${SRC_DIR}"/entry.html ]] || warn "posts/ + entry.html for posts"
   [[ -f "${SRC_DIR}"/index.html ]]  || fatal "index.html required"
-  [[ -f "${SRC_DIR}"/sitemap.xml ]] || fatal "sitemap.xml required"
-  [[ -f "${SRC_DIR}"/robots.txt ]]  || fatal "robots.txt required"
-  # [[ -f "${SRC_DIR}"/feed.rss ]]    || fatal "feed.rss required"
+  [[ -f "${SRC_DIR}"/sitemap.xml ]] || warn "sitemap.xml isn't required, but you likely want it"
+  [[ -f "${SRC_DIR}"/robots.txt ]]  || warn "robots.txt isn't required, but you likely want it"
+  [[ -f "${SRC_DIR}"/feed.rss ]]    || warn "feed.rss isn't required, but you likely want it"
 
   [[ -d "${DEST_DIR}" ]] && rm -rf "${DEST_DIR}"
   mkdir -p "${DEST_DIR}" && log "Created build directory: ${DEST_DIR}"
@@ -252,8 +281,7 @@ build() {
   build_index
   build_sitemap
   build_robots
-  # TODO: build feed (use -R with `date` for RFC 822 compliance)
-  # build_feed
+  build_feed
   build_static
 }
 

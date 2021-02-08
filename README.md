@@ -22,23 +22,23 @@ The _bare minimum_ is (`pages/` + `page.html`) OR (`posts/` + `entry.html`) AND
 Build (local develop):
 
 ```bash
-$ docker build . -t bic:local
+docker build . -t bic:local
 ```
 
 Run (local develop):
 
 ```bash
-$ docker run --rm -it -v $PWD/../bic-example:/src -v $PWD:/app --entrypoint bash bic:local
+docker run --rm -it -v $PWD/../bic-example:/src -v $PWD:/app --entrypoint bash bic:local
 ```
 
 Run (just build):
 
 ```bash
-$ docker run --rm -v $PWD/../bic-example:/src bic:local
+docker run --rm -v $PWD/../bic-example:/src bic:local
 ```
 
 Local server:
 
 ```bash
-$ browser-sync --watch --no-notify --extensions html build
+browser-sync --watch --no-notify --extensions html build
 ```
