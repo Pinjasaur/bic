@@ -3,8 +3,10 @@
 `bic` is an opinionated and minimal static site generator&mdash;with a focus on
 blogs.
 
+{% raw %}
 It uses [Pandoc] to convert plain Markdown files into HTML. They get templated
 {{[Mustache]}}-style with [Mo]. [Hashids] is used to generate IDs.
+{% endraw %}
 
 ## Basics
 
@@ -66,7 +68,7 @@ Optional, but you'll probably want to change:
 ## Templating
 
 Anything listed above or added additionally to a `.env` will be available
-_globably_ within templates.
+_globally_ within templates.
 
 Some specific keys used within entries (posts or drafts) and pages:
 
