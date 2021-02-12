@@ -5,19 +5,16 @@
 
 # bic
 
-Opinionated minimal static site (blog) generator, written in bash.
+![Build Status](https://img.shields.io/github/workflow/status/Pinjasaur/bic/Build)
+
+Opinionated minimal static site (blog) generator. Implemented in a single Bash
+script.
 
 ## Getting Started
 
-```bash
-mkdir {static,pages,posts,drafts}
-touch {index,entry}.html
-```
+Check out the [docs] or [bic-example] repository.
 
-The _bare minimum_ is (`pages/` + `page.html`) OR (`posts/` + `entry.html`) AND
-`index.html`.
-
-## Docker
+## Local Development
 
 Build (local develop):
 
@@ -25,20 +22,28 @@ Build (local develop):
 docker build . -t bic:local
 ```
 
-Run (local develop):
+Run (local develop) with [bic-example]:
 
 ```bash
 docker run --rm -it -v $PWD/../bic-example:/src -v $PWD:/app --entrypoint bash bic:local
 ```
 
-Run (just build):
+Run (just build) with [bic-example]:
 
 ```bash
 docker run --rm -v $PWD/../bic-example:/src bic:local
 ```
 
-Local server:
+Local server (ran in [bic-example]):
 
 ```bash
 browser-sync --watch --no-notify --extensions html build
 ```
+
+## License
+
+[MIT].
+
+[docs]: https://pinjasaur.github.io/bic/
+[bic-example]: https://github.com/Pinjasaur/bic-example
+[MIT]: https://pinjasaur.mit-license.org/2021
