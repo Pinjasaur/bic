@@ -4,7 +4,7 @@
 blogs.
 
 It uses [Pandoc] to convert plain Markdown files into HTML. They get templated
-[{{mustache}}]-style with [Mo]. [Hashids] is used to generate IDs.
+{{[Mustache]}}-style with [Mo]. [Hashids] is used to generate IDs.
 
 ## Basics
 
@@ -77,6 +77,6 @@ Some specific keys used within entries (posts or drafts) and pages:
 - `body`, converted Markdown to HTML contents (sans title)
 
 [Pandoc]: https://pandoc.org/
-[{{mustache}}]: https://mustache.github.io/mustache.5.html
+[Mustache]: https://mustache.github.io/mustache.5.html
 [Mo]: https://github.com/tests-always-included/mo
 [Hashids]: https://hashids.org/
