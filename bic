@@ -68,9 +68,9 @@ mk_date() {
   TZ="${TIMEZONE}" date -r "${1}" "${DATE_FORMAT}"
 }
 
-# TODO: hashids, what should be the salt?
 mk_id() {
-  echo "${1%-${2}}"
+   local -r hashid="$("${__dir}"/lib/bashids -e -s "${SALT:-bic}" -l 32 "${1%-${2}}")"
+   echo "${__base}_${hashid}"
 }
 
 # ---
