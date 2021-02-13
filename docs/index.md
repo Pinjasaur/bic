@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="256" src="docs/logo.png" alt="bic">
+  <img width="256" src="logo.png" alt="bic">
 </div>
 
 # bic docs
