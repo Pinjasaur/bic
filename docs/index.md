@@ -1,8 +1,8 @@
+# Docs
+
 <div align="center">
   <img width="256" src="logo.png" alt="bic">
 </div>
-
-# bic docs
 
 `bic` is an opinionated and minimal static site generator&mdash;with a focus on
 blogs.
