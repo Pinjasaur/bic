@@ -39,14 +39,17 @@ to spit out a `build` directory with your generated site.
 - Pages exist in `pages/*.md`. Not nested.
 - Posts & drafts exist within `posts/*.md` and `drafts/*.md`, respectively.
     - _Ordering_ is determined by a leading digit sequence e.g., `999-post.md`
-    will be the first post, `998-tacocat.md` will be second, et cetera.
+    for the first post, `998-tacocat.md` for the second, et cetera. I would
+    recommend 3 or 4 digits for the Future Proof&trade;.
     - This lets the file `mtime` be used for the author's discretion. However,
     Git doesn't record `mtime`, so I would treat it as the "last modified" date.
+    - The title is derived from the _first line_ which should begin with `#` to
+    signify the top-level heading.
 - Slugs are bare e.g., `/my-cool-post` _not_ `/posts/2021/my-cool-post`.
 
 ## Structure
 
-For a fully-featured example. view the demo source code: https://github.com/Pinjasaur/bic-example
+For a fully-featured example. view the demo source code: <https://github.com/Pinjasaur/bic-example>
 
 ## Config
 
@@ -75,7 +78,7 @@ Some specific keys used within entries (posts or drafts) and pages:
 - `slug`, to be used in URL
 - `title`, taken from first line of file `# ...`
 - `date`, literally the `mtime` of the file
-- `id`, the leading number of the entry filename
+- `id`, the digit sequence for an entry encoded with [Hashids]
 - `body`, converted Markdown to HTML contents (sans title)
 
 [Pandoc]: https://pandoc.org/
