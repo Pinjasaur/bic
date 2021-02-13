@@ -20,9 +20,7 @@ You get the (opinionated) basics of a static site/blog (read: opinionated):
 - sitemap.xml
 - RSS feed
 
-For reproducible builds, I would recommend using `bic` with Docker:
-
-`ghcr.io/pinjasaur/bic`
+For reproducible builds, I would recommend using `bic` with Docker: `ghcr.io/pinjasaur/bic`
 
 Essentially, mount your source directory to `/src`
 
@@ -49,7 +47,7 @@ to spit out a `build` directory with your generated site.
 
 ## Structure
 
-For a fully-featured example. view the demo source code: <https://github.com/Pinjasaur/bic-example>
+For a fully-featured example, view the demo source code: <https://github.com/Pinjasaur/bic-example>
 
 ## Config
 
