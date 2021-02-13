@@ -1,7 +1,6 @@
 <div align="center">
-  <img width="256" src=".github/bic.png" alt="bic">
+  <img width="256" src="docs/logo.png" alt="bic">
 </div>
-
 
 # bic
 
@@ -44,6 +43,6 @@ browser-sync --watch --no-notify --extensions html build
 
 [MIT].
 
-[docs]: https://pinjasaur.github.io/bic/
+[docs]: https://bic.sh/
 [bic-example]: https://github.com/Pinjasaur/bic-example
 [MIT]: https://pinjasaur.mit-license.org/2021
