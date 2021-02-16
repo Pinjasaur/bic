@@ -31,12 +31,12 @@ HEREDOC
 }
 
 fatal() {
-  log "[FATAL] ${*:-}" 2>&1
+  log "[FATAL] ${*:-}" 1>&2
   exit 1
 }
 
 warn() {
-  log "[WARN] ${*:-}" 2>&1
+  log "[WARN] ${*:-}" 1>&2
 }
 
 log() {
@@ -69,7 +69,7 @@ mk_date() {
 }
 
 mk_id() {
-   local -r hashid="$("${__dir}"/lib/bashids -e -s "${SALT:-bic}" -l 32 "${1%-${2}}")"
+   local -r hashid="$("${__dir}"/lib/bashids -e -s "${SALT:-bic}" -l 28 "${1%-${2}}")"
    echo "${__base}_${hashid}"
 }
 
@@ -105,6 +105,7 @@ build_pages() {
 }
 
 build_posts() {
+
   ALL_POSTS=()
   [[ -d "${SRC_DIR}"/posts ]] && for post in "${SRC_DIR}"/posts/*.md; do
     log "Building post: ${post}"
@@ -122,7 +123,7 @@ build_posts() {
       export title body date slug id
       mo \
         < "${SRC_DIR}"/entry.html \
-        > "${DEST_DIR}/${filename_sans_id%.md}.html"
+        > "${DEST_DIR}/${slug}.html"
     )
   done
   unset post
@@ -147,7 +148,7 @@ build_drafts() {
       export title body date slug id
       mo \
         < "${SRC_DIR}"/entry.html \
-        > "${DEST_DIR}/drafts/${filename_sans_id%.md}.html"
+        > "${DEST_DIR}/drafts/${slug}.html"
     )
   done
   unset draft
@@ -223,7 +224,7 @@ build_robots() {
 }
 
 build_feed() {
-  [[ ! -f "${SRC_DIR}/feed.rss" ]] && return
+  [[ ! -f "${SRC_DIR}/feed.rss" && -f "${SRC_DIR}"/__feed.rss ]] && return
   log "Building feed.rss"
 
   local __feed
@@ -264,10 +265,11 @@ build() {
 
   [[ -d "${SRC_DIR}"/pages && -f "${SRC_DIR}"/page.html  ]] || warn "pages/ + page.html for pages"
   [[ -d "${SRC_DIR}"/posts && -f "${SRC_DIR}"/entry.html ]] || warn "posts/ + entry.html for posts"
-  [[ -f "${SRC_DIR}"/index.html ]]  || fatal "index.html required"
+
+  [[ -f "${SRC_DIR}"/index.html && -f "${SRC_DIR}"/__index.html ]]  || fatal "index.html (and __index.html) required"
+  [[ -f "${SRC_DIR}"/feed.rss   && -f "${SRC_DIR}"/__feed.rss ]]    || warn "feed.rss (and __feed.rss) isn't required, but you likely want it"
   [[ -f "${SRC_DIR}"/sitemap.xml ]] || warn "sitemap.xml isn't required, but you likely want it"
   [[ -f "${SRC_DIR}"/robots.txt ]]  || warn "robots.txt isn't required, but you likely want it"
-  [[ -f "${SRC_DIR}"/feed.rss ]]    || warn "feed.rss isn't required, but you likely want it"
 
   [[ -d "${DEST_DIR}" ]] && rm -rf "${DEST_DIR}"
   mkdir -p "${DEST_DIR}" && log "Created build directory: ${DEST_DIR}"
