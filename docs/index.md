@@ -34,7 +34,7 @@ docker run --rm -v "$PWD":/src ghcr.io/pinjasaur/bic:latest
 
 to spit out a `build` directory with your generated site.
 
-## Opinionated
+## Opinionated?
 
 `bic` is strict where necessary to keep it opinionated with a lean scope.
 
@@ -47,15 +47,44 @@ to spit out a `build` directory with your generated site.
     Git doesn't record `mtime`, so I would treat it as the "last modified" date.
     - The title is derived from the _first line_ which should begin with `#` to
     signify the top-level heading.
-- Slugs are bare e.g., `/my-cool-post` _not_ `/posts/2021/my-cool-post`.
+- Slugs are bare e.g., `/my-cool-post` _not_ `/posts/2021/my-cool-post.html`.
 
 ## Structure
 
 For a fully-featured example, view the demo source code: <https://github.com/Pinjasaur/bic-example>
 
+```
+$ tree -F --dirsfirst
+.
+├── drafts/
+│   └── 997-untitled.md
+├── pages/
+│   └── about.md
+├── posts/
+│   └── 999-hello-world.md
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   ├── img/
+│   │   └── photo.jpg
+│   └── js/
+│       └── script.js
+├── __feed.rss
+├── __index.html
+├── _footer.html
+├── _head.html
+├── _header.html
+├── entry.html
+├── feed.rss
+├── index.html
+├── page.html
+├── robots.txt
+└── sitemap.xml
+```
+
 ## Config
 
-`bic` uses an `.env` pattern. This let's you configure required variables and add
+`bic` uses an `.env` pattern. This lets you configure required variables and add
 any extras that can be used within your templates. Talk about batteries included.
 
 Required config (you'll have a bad time with the defaults):
@@ -65,9 +94,9 @@ Required config (you'll have a bad time with the defaults):
 - `TIMEZONE` e.g., `US/Central` (the timezone you're in)
 - `SALT` e.g. `super-random-abcxyz` (used to seed the [Hashids] encoding)
 
-Optional, but you'll probably want to change:
+Optional, but you may want to change:
 
-- `DATE_FORMAT` e.g., `+%B %d, %Y` (passed into `date`, default: `YYYY-MM-DD`)
+- `DATE_FORMAT` e.g., `+%B %d, %Y` (passed into `date`, default: `+%F` &rarr; `YYYY-MM-DD`)
 - `BUILD_DIR` e.g., `_site` (configure output directory, default: `build`)
 
 ## Templating
@@ -82,6 +111,15 @@ Some specific keys used within entries (posts or drafts) and pages:
 - `date`, literally the `mtime` of the file
 - `id`, the digit sequence for an entry encoded with [Hashids]
 - `body`, converted Markdown to HTML contents (sans title)
+
+Each entry in `posts/*.md` or `drafts/*.md` is rendered against an `entry.html`.
+
+Each page in `pages/*.md` is rendered against a `post.html`.
+
+`index.html` and `feed.rss` both use a double-underscore-prefixed template
+partial of the same name e.g., `{{__index}}` from `__index.html`.
+
+`sitemap.xml` has access to an array of slugs with the `slugs` key.
 
 [Pandoc]: https://pandoc.org/
 [Mustache]: https://mustache.github.io/mustache.5.html
