@@ -116,8 +116,10 @@ Each entry in `posts/*.md` or `drafts/*.md` is rendered against an `entry.html`.
 
 Each page in `pages/*.md` is rendered against a `post.html`.
 
+{% raw %}
 `index.html` and `feed.rss` both use a double-underscore-prefixed template
 partial of the same name e.g., `{{__index}}` from `__index.html`.
+{% endraw %}
 
 `sitemap.xml` has access to an array of slugs with the `slugs` key.
 
