@@ -105,7 +105,6 @@ build_pages() {
 }
 
 build_posts() {
-
   ALL_POSTS=()
   [[ -d "${SRC_DIR}"/posts ]] && for post in "${SRC_DIR}"/posts/*.md; do
     log "Building post: ${post}"
@@ -277,13 +276,13 @@ build() {
   SITE_AUTHOR="$(html_escape "${SITE_AUTHOR}")"
   SITE_TITLE="$(html_escape "${SITE_TITLE}")"
 
-  build_pages
-  build_posts
-  build_drafts
-  build_index
-  build_sitemap
+  build_pages   # side effect(s): $ALL_PAGES
+  build_posts   # side effect(s): $ALL_POSTS
+  build_drafts  # side effect(s): $ALL_DRAFTS
+  build_index   # uses $ALL_POSTS
+  build_sitemap # uses $ALL_PAGES, $ALL_POSTS
   build_robots
-  build_feed
+  build_feed    # uses $ALL_POSTS
   build_static
 }
 

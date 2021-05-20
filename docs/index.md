@@ -16,10 +16,10 @@ It uses [Pandoc] to convert plain Markdown files into HTML. They get templated
 
 You get the (opinionated) basics of a static site/blog (read: opinionated):
 
-- Pages e.g., `pages/about.md` &rarr; `/about.html`
-- Posts e.g., `posts/999-first-post.md` &rarr; `/first-post.html`
-- Drafts e.g., `drafts/998-untitled.md` &rarr; `/drafts/untitled.html`
-- Static content e.g., `static/*` &rarr; `/*`
+- pages e.g., `pages/about.md` &rarr; `/about.html`
+- posts e.g., `posts/999-first-post.md` &rarr; `/first-post.html`
+- drafts e.g., `drafts/998-untitled.md` &rarr; `/drafts/untitled.html`
+- static content e.g., `static/*` &rarr; `/*`
 - robots.txt
 - sitemap.xml
 - RSS feed
@@ -106,7 +106,7 @@ _globally_ within templates.
 
 Some specific keys used within entries (posts or drafts) and pages:
 
-- `slug`, to be used in URL
+- `slug`, to be used in URL (does _not_ contain the `.html` file extension)
 - `title`, taken from first line of file `# ...`
 - `date`, literally the `mtime` of the file
 - `id`, the digit sequence for an entry encoded with [Hashids]
@@ -114,7 +114,7 @@ Some specific keys used within entries (posts or drafts) and pages:
 
 Each entry in `posts/*.md` or `drafts/*.md` is rendered against an `entry.html`.
 
-Each page in `pages/*.md` is rendered against a `post.html`.
+Each page in `pages/*.md` is rendered against a `page.html`.
 
 {% raw %}
 `index.html` and `feed.rss` both use a double-underscore-prefixed template
