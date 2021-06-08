@@ -34,6 +34,18 @@ docker run --rm -v "$PWD":/src ghcr.io/pinjasaur/bic:latest
 
 to spit out a `build` directory with your generated site.
 
+
+Alternatively, `bic` is available as a (nix flake)[flake].
+
+Follow the [setting up flakes] guide to enable it, then run 
+
+```bash
+nix run github:Pinjasaur/bic --command bic .
+```
+
+to run `bic` in the current directory and spit out a `build` directory with your generated site.
+ 
+
 ## Opinionated?
 
 `bic` is strict where necessary to keep it opinionated with a lean scope.
@@ -127,3 +139,5 @@ partial of the same name e.g., `{{__index}}` from `__index.html`.
 [Mustache]: https://mustache.github.io/mustache.5.html
 [Mo]: https://github.com/tests-always-included/mo
 [Hashids]: https://hashids.org/
+[flake]: https://www.tweag.io/blog/2020-05-25-flakes
+[setting up flakes]: https://nixos.wiki/wiki/Flakes
