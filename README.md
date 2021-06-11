@@ -33,7 +33,7 @@ Run (just build) with [bic-example]:
 docker run --rm -v $PWD/../bic-example:/src bic:local
 ```
 
-Run using (nix flakes)[flake]
+Run using [nix flakes]
 
 ```bash
 nix shell github:Pinjasaur/bic --command bic $PWD/../bic-example
@@ -52,4 +52,4 @@ browser-sync --watch --no-notify --extensions html build
 [docs]: https://bic.sh/
 [bic-example]: https://github.com/Pinjasaur/bic-example
 [MIT]: https://pinjasaur.mit-license.org/2021
-[flake]: https://www.tweag.io/blog/2020-05-25-flakes
+[nix flakes]: https://www.tweag.io/blog/2020-05-25-flakes
