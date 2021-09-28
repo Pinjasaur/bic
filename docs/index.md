@@ -5,7 +5,7 @@
 # Docs
 
 `bic` is an opinionated and minimal static site generator&mdash;with a focus on
-blogs.
+blogs. View the demo: <https://demo.bic.sh/>.
 
 {% raw %}
 It uses [Pandoc] to convert plain Markdown files into HTML. They get templated
@@ -34,7 +34,6 @@ docker run --rm -v "$PWD":/src ghcr.io/pinjasaur/bic:latest
 
 to spit out a `build` directory with your generated site.
 
-
 Alternatively, `bic` is available as a [nix flake].
 
 Follow the [setting up flakes] guide to enable it, then run 
@@ -43,7 +42,8 @@ Follow the [setting up flakes] guide to enable it, then run
 nix run github:Pinjasaur/bic --command bic .
 ```
 
-to run `bic` in the current directory and spit out a `build` directory with your generated site.
+to run `bic` in the current directory and spit out a `build` directory with your
+generated site.
  
 
 ## Opinionated?
@@ -129,11 +129,18 @@ Each entry in `posts/*.md` or `drafts/*.md` is rendered against an `entry.html`.
 Each page in `pages/*.md` is rendered against a `page.html`.
 
 {% raw %}
-`index.html` and `feed.rss` both use a double-underscore-prefixed template
+`index.html` and `feed.rss` both use a [double-underscore-prefixed] template
 partial of the same name e.g., `{{__index}}` from `__index.html`.
 {% endraw %}
 
 `sitemap.xml` has access to an array of slugs with the `slugs` key.
+
+## Showcase
+
+`bic` in the wild:
+
+- the demo: <https://demo.bic.sh/>
+- Mitch's blog: <https://fossen.dev/>
 
 [Pandoc]: https://pandoc.org/
 [Mustache]: https://mustache.github.io/mustache.5.html
@@ -141,3 +148,4 @@ partial of the same name e.g., `{{__index}}` from `__index.html`.
 [Hashids]: https://hashids.org/
 [nix flake]: https://www.tweag.io/blog/2020-05-25-flakes
 [setting up flakes]: https://nixos.wiki/wiki/Flakes
+[double-underscore-prefixed]: https://paul.af/applying-hungarian-notation-to-mustache-partials
