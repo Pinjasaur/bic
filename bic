@@ -73,7 +73,7 @@ mk_date() {
 }
 
 mk_id() {
-   local -r hashid="$("${__dir}"/lib/bashids -e -s "${SALT:-bic}" -l 28 "${1%-${2}}")"
+   local -r hashid="$("${__dir}"/lib/bashids -e -s "${SALT:-bic}" -l 28 "${1%-"${2}"}")"
    echo "${__base}_${hashid}"
 }
 
