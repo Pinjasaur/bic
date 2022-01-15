@@ -1,4 +1,4 @@
-name: Build
+name: CI
 
 on:
   push:
@@ -12,7 +12,7 @@ on:
 
   # Run tests for any PRs.
   pull_request:
-  
+
 env:
   IMAGE_NAME: bic
 
@@ -25,14 +25,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Run tests
-        run: |
-          if [ -f docker-compose.test.yml ]; then
-            docker-compose --file docker-compose.test.yml build
-            docker-compose --file docker-compose.test.yml run sut
-          else
-            docker build . --file Dockerfile
-          fi
+      - name: Run Shellcheck
+        uses: ludeeus/action-shellcheck@master
+
+      - name: Setup BATS
+        uses: mig4/setup-bats@v1
+
+      - name: Test
+        run: bats tests/test.bats
 
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
@@ -48,7 +48,7 @@ jobs:
 
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
-        
+
 
       - name: Log into registry
         run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
