@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+#
+# bic - minimal static site/blog generator.
+# Paul Esch-Laurent <p@uly.io>
+# MIT licensed: https://pinjasaur.mit-license.org/
 
 # Strict settings
 set -o errexit
@@ -73,7 +77,7 @@ mk_id() {
    echo "${__base}_${hashid}"
 }
 
-# ---
+# --- The "line" between utility and core functions. ---
 
 # `source` a file: https://stackoverflow.com/a/30969768
 src() {
@@ -223,7 +227,7 @@ build_robots() {
 }
 
 build_feed() {
-  [[ ! -f "${SRC_DIR}/feed.rss" && -f "${SRC_DIR}"/__feed.rss ]] && return
+  [[ ! -f "${SRC_DIR}/feed.rss" && ! -f "${SRC_DIR}"/__feed.rss ]] && return
   log "Building feed.rss"
 
   local __feed
@@ -250,8 +254,9 @@ build_feed() {
 }
 
 build_static() {
+  [[ ! -d "${SRC_DIR}"/static ]] && return
   log "Building /static -> /"
-  [[ -d "${SRC_DIR}"/static ]] && cp -a "${SRC_DIR}"/static/. "${DEST_DIR}"
+  cp -a "${SRC_DIR}"/static/. "${DEST_DIR}"
 }
 
 build() {
