@@ -27,6 +27,8 @@ jobs:
 
       - name: Run Shellcheck
         uses: ludeeus/action-shellcheck@master
+        with:
+          ignore_paths: lib
 
       - name: Setup BATS
         uses: mig4/setup-bats@v1
