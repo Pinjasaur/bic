@@ -5,7 +5,7 @@
 # Docs
 
 `bic` is an opinionated and minimal static site generator&mdash;with a focus on
-blogs. View the demo: <https://demo.bic.sh/>.
+blogs. View the [demo] or the [source].
 
 {% raw %}
 It uses [Pandoc] to convert plain Markdown files into HTML. They get templated
@@ -56,8 +56,8 @@ generated site.
     for the first post, `998-tacocat.md` for the second, et cetera. I would
     recommend 3 or 4 digits for the Future Proof&trade;.
     - This lets the file `mtime` be used for the author's discretion. However,
-    Git doesn't record `mtime`, so I would treat it as the "last modified" date.
-    - The title is derived from the _first line_ which should begin with `#` to
+    Git [doesn't record `mtime`][mtime], so I would treat it as the "last modified" date.
+    - The title is derived from the _first line_ which _must_ begin with `#` to
     signify the top-level heading.
 - Slugs are bare e.g., `/my-cool-post` _not_ `/posts/2021/my-cool-post.html`.
 
@@ -73,6 +73,7 @@ $ tree -F --dirsfirst
 ├── pages/
 │   └── about.md
 ├── posts/
+│   ├── 998-foo-bar.md
 │   └── 999-hello-world.md
 ├── static/
 │   ├── css/
@@ -101,9 +102,9 @@ any extras that can be used within your templates. Talk about batteries included
 
 Required config (you'll have a bad time with the defaults):
 
-- `SITE_TITLE` e.g., `My Cool Site` (the site's title)
-- `SITE_URL` e.g., `https://mycool.site` (the site's full base URL with _no_ trailing slash)
-- `TIMEZONE` e.g., `US/Central` (the timezone you're in)
+- `SITE_TITLE` e.g., `My Cool Thing` (the site's title)
+- `SITE_URL` e.g., `https://domain.tld` (the site's full base URL with _no_ trailing slash)
+- `TIMEZONE` e.g., `US/Central` (the [timezone] you're in)
 - `SALT` e.g. `super-random-abcxyz` (used to seed the [Hashids] encoding)
 
 Optional, but you may want to change:
@@ -149,3 +150,7 @@ partial of the same name e.g., `{{__index}}` from `__index.html`.
 [nix flake]: https://www.tweag.io/blog/2020-05-25-flakes
 [setting up flakes]: https://nixos.wiki/wiki/Flakes
 [double-underscore-prefixed]: https://paul.af/applying-hungarian-notation-to-mustache-partials
+[demo]: https://demo.bic.sh/
+[source]: https://github.com/Pinjasaur/bic
+[mtime]: https://stackoverflow.com/questions/1964470/whats-the-equivalent-of-subversions-use-commit-times-for-git/1964508#1964508
+[timezone]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
