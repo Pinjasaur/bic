@@ -33,6 +33,9 @@ jobs:
       - name: Setup BATS
         uses: mig4/setup-bats@v1
 
+      - name: Install Pandoc?
+        uses: docker://pandoc/core:2.9
+
       - name: Test
         run: bats tests/test.bats
 
