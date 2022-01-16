@@ -33,6 +33,7 @@
 
 @test "bic builds pages/ correctly" {
   run ./bic tests/pages
+  echo "# ${lines[*]}" >&3
   [[ -f tests/pages/build/page.html ]]
   [[ "${status}" == 0 ]]
   rm -rf tests/pages/build

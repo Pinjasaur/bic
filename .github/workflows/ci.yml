@@ -26,16 +26,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Run Shellcheck
-        uses: ludeeus/action-shellcheck@master
-        with:
-          ignore_paths: lib
-
       - name: Dependencies
         run: sudo apt-get update && sudo apt-get install -y pandoc tzdata
 
       - name: Setup BATS
         uses: mig4/setup-bats@v1
+
+      - name: Lint
+        uses: ludeeus/action-shellcheck@master
+        with:
+          ignore_paths: lib
 
       - name: Test
         run: bats tests/test.bats
