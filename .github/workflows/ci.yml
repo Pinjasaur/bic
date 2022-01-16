@@ -32,7 +32,7 @@ jobs:
           ignore_paths: lib
 
       - name: Dependencies
-        run: apt-get update && apt-get install -y pandoc tzdata
+        run: sudo apt-get update && apt-get install -y pandoc tzdata
 
       - name: Setup BATS
         uses: mig4/setup-bats@v1
