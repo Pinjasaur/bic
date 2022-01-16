@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 #
 # Welcome to bic's minimal test suite. Each subdirectory models a directory
-# wherembic may be ran in order to assert behaviors based on the state of the
+# where bic may be ran in order to assert behaviors based on the state of the
 # file structure.
 
 @test "bic --help prints usage & exits cleanly" {
@@ -29,4 +29,28 @@
   [[ "${status}" == 0 ]]
   rm -rf tests/static/build
   [[ ! -d tests/static/build ]]
+}
+
+@test "bic builds pages/ correctly" {
+  run ./bic tests/pages
+  [[ -f tests/pages/build/page.html ]]
+  [[ "${status}" == 0 ]]
+  rm -rf tests/pages/build
+  [[ ! -d tests/pages/build ]]
+}
+
+@test "bic builds posts/ correctly" {
+  run ./bic tests/posts
+  [[ -f tests/posts/build/hello-world.html ]]
+  [[ "${status}" == 0 ]]
+  rm -rf tests/posts/build
+  [[ ! -d tests/posts/build ]]
+}
+
+@test "bic builds drafts/ correctly" {
+  run ./bic tests/drafts
+  [[ -f tests/drafts/build/drafts/untitled.html ]]
+  [[ "${status}" == 0 ]]
+  rm -rf tests/drafts/build
+  [[ ! -d tests/drafts/build ]]
 }

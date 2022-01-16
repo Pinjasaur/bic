@@ -88,8 +88,9 @@ src() {
 }
 
 build_pages() {
+  [[ ! -d "${SRC_DIR}"/pages || ! -f "${SRC_DIR}"/page.html ]] && return
   ALL_PAGES=()
-  [[ -d "${SRC_DIR}"/pages ]] && for page in "${SRC_DIR}"/pages/*.md; do
+  for page in "${SRC_DIR}"/pages/*.md; do
     log "Building page: ${page}"
     ALL_PAGES+=("${page}")
     local filename slug
@@ -109,8 +110,9 @@ build_pages() {
 }
 
 build_posts() {
+  [[ ! -d "${SRC_DIR}"/posts || ! -f "${SRC_DIR}"/entry.html ]] && return
   ALL_POSTS=()
-  [[ -d "${SRC_DIR}"/posts ]] && for post in "${SRC_DIR}"/posts/*.md; do
+  for post in "${SRC_DIR}"/posts/*.md; do
     log "Building post: ${post}"
     ALL_POSTS+=("${post}")
     local filename filename_sans_id
@@ -133,8 +135,9 @@ build_posts() {
 }
 
 build_drafts() {
+  [[ ! -d "${SRC_DIR}"/drafts || ! -f "${SRC_DIR}"/entry.html ]] && return
   ALL_DRAFTS=()
-  [[ -d "${SRC_DIR}"/drafts ]] && for draft in "${SRC_DIR}"/drafts/*.md; do
+  for draft in "${SRC_DIR}"/drafts/*.md; do
     log "Building draft: ${draft}"
     ALL_DRAFTS+=("${draft}")
     local filename filename_sans_id
@@ -227,7 +230,7 @@ build_robots() {
 }
 
 build_feed() {
-  [[ ! -f "${SRC_DIR}/feed.rss" && ! -f "${SRC_DIR}"/__feed.rss ]] && return
+  [[ ! -f "${SRC_DIR}/feed.rss" || ! -f "${SRC_DIR}"/__feed.rss ]] && return
   log "Building feed.rss"
 
   local __feed
