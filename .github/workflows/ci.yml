@@ -32,7 +32,6 @@ jobs:
           ignore_paths: lib
 
       - name: Dependencies
-        uses: actions/checkout@v2
         run: apt-get update && apt-get install -y pandoc tzdata
 
       - name: Setup BATS
