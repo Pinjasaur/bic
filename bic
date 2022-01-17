@@ -102,7 +102,7 @@ build_pages() {
       slug="$(slugify "${filename%.md}")"
       export title body slug
       mo \
-        < "${SRC_DIR}"/page.html \
+        "${SRC_DIR}"/page.html \
         > "${DEST_DIR}/${slug}.html"
     )
   done
@@ -127,7 +127,7 @@ build_posts() {
       id="$(mk_id "${filename}" "${filename_sans_id}")"
       export title body date slug id
       mo \
-        < "${SRC_DIR}"/entry.html \
+        "${SRC_DIR}"/entry.html \
         > "${DEST_DIR}/${slug}.html"
     )
   done
@@ -153,7 +153,7 @@ build_drafts() {
       id="$(mk_id "${filename}" "${filename_sans_id}")"
       export title body date slug id
       mo \
-        < "${SRC_DIR}"/entry.html \
+        "${SRC_DIR}"/entry.html \
         > "${DEST_DIR}/drafts/${slug}.html"
     )
   done
@@ -173,7 +173,7 @@ build_index() {
     date="$(mk_date "${post}")"
     slug="$(mk_slug "${filename_sans_id%.md}")"
     id="$(mk_id "${filename}" "${filename_sans_id}")"
-    __index+="$(mo < "${SRC_DIR}"/__index.html)"
+    __index+="$(mo "${SRC_DIR}"/__index.html)"
     __index+=$'\n'
   done
 
@@ -181,7 +181,7 @@ build_index() {
     title="All posts"
     export __index title
     mo \
-      < "${SRC_DIR}"/index.html \
+      "${SRC_DIR}"/index.html \
       > "${DEST_DIR}"/index.html
   )
 }
@@ -212,7 +212,7 @@ build_sitemap() {
   (
     export slugs
     mo \
-      < "${SRC_DIR}"/sitemap.xml \
+      "${SRC_DIR}"/sitemap.xml \
       > "${DEST_DIR}"/sitemap.xml
   )
   unset slugs
@@ -224,7 +224,7 @@ build_robots() {
 
   (
     mo \
-      < "${SRC_DIR}"/robots.txt \
+      "${SRC_DIR}"/robots.txt \
       > "${DEST_DIR}"/robots.txt
   )
 }
@@ -244,7 +244,7 @@ build_feed() {
     date="$(DATE_FORMAT="-R" mk_date "${post}")"
     slug="$(mk_slug "${filename_sans_id%.md}")"
     id="$(mk_id "${filename}" "${filename_sans_id}")"
-    __feed+="$(mo < "${SRC_DIR}"/__feed.rss)"
+    __feed+="$(mo "${SRC_DIR}"/__feed.rss)"
     __feed+=$'\n'
   done
 
