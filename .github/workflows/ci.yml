@@ -47,6 +47,9 @@ jobs:
       - name: Test
         run: bats tests/test.bats
 
+      - name: Smoketest via bic-example repo
+        run: gh repo clone Pinjasaur/bic-example && ./bic bic-example
+
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
   push:
