@@ -33,7 +33,8 @@ jobs:
       - name: Pandoc
         run: |
           curl -sL https://github.com/jgm/pandoc/releases/download/$PANDOC_VERSION/pandoc-$PANDOC_VERSION-1-amd64.deb -o pandoc-$PANDOC_VERSION.deb && \
-          sudo dpkg -i pandoc-$PANDOC_VERSION.deb
+          sudo dpkg -i pandoc-$PANDOC_VERSION.deb && \
+          rm -f pandoc-$PANDOC_VERSION.deb
 
       - name: BATS
         uses: mig4/setup-bats@v1
