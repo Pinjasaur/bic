@@ -54,3 +54,13 @@
   rm -rf tests/drafts/build
   [[ ! -d tests/drafts/build ]]
 }
+
+@test "bic builds robots.txt correctly" {
+  run ./bic tests/robots
+  [[ -f tests/robots/build/robots.txt ]]
+  [[ "${status}" == 0 ]]
+  run cat tests/robots/build/robots.txt
+  [[ "${lines[0]}" == "# Test :)" ]]
+  rm -rf tests/robots/build
+  [[ ! -d tests/robots/build ]]
+}
