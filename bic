@@ -251,7 +251,7 @@ build_feed() {
   (
     export __feed
     mo \
-      < "${SRC_DIR}"/feed.rss \
+      "${SRC_DIR}"/feed.rss \
       > "${DEST_DIR}"/feed.rss
   )
 }
