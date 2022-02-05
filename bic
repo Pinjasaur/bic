@@ -9,6 +9,9 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+# Enable protection of overwriting existing files via redirection
+set -o noclobber
+
 # "Magic" variables
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 __file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
@@ -269,6 +272,7 @@ build() {
   [[ "${SRC_DIR}" != "${__dir}" ]] && [[ -f "${SRC_DIR}"/.env ]] && src "${SRC_DIR}"/.env && log "Custom .env sourced"
   DEST_DIR="${SRC_DIR}/${BUILD_DIR:-build}"
   log "Using source directory: ${SRC_DIR}"
+  [[ -n "${BIC_OVERWRITE:-}" ]] && set +o noclobber && log "Disabled 'noclobber' redirection overwrite protection"
 
   [[ -d "${SRC_DIR}"/pages && -f "${SRC_DIR}"/page.html  ]] || warn "pages/ + page.html for pages"
   [[ -d "${SRC_DIR}"/posts && -f "${SRC_DIR}"/entry.html ]] || warn "posts/ + entry.html for posts"

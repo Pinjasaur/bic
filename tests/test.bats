@@ -64,3 +64,21 @@
   rm -rf tests/robots/build
   [[ ! -d tests/robots/build ]]
 }
+
+@test "bic will not overwrite by default" {
+  run ./bic tests/overwrite
+  [[ -f tests/overwrite/build/test.html ]]
+  [[ "${status}" == 1 ]] # errored out trying to overwrite test.html
+  rm -rf tests/overwrite/build
+  [[ ! -d tests/overwrite/build ]]
+}
+
+@test "bic will overwrite if specified" {
+  BIC_OVERWRITE=1 run ./bic tests/overwrite
+  [[ -f tests/overwrite/build/test.html ]]
+  [[ "${status}" == 0 ]] # didn't error out
+  run cat tests/overwrite/build/test.html
+  [[ "${lines[0]}" == "<p>post</p>" ]]
+  rm -rf tests/overwrite/build
+  [[ ! -d tests/overwrite/build ]]
+}

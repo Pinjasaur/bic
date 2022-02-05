@@ -136,6 +136,24 @@ partial of the same name e.g., `{{__index}}` from `__index.html`.
 
 `sitemap.xml` has access to an array of slugs with the `slugs` key.
 
+## Caveats
+
+There is an order-of-operations for how files are built, as follows:
+
+- pages e.g. `pages/*.md`
+- posts e.g. `posts/*.md`
+- drafts e.g. `drafts/*.md`
+- `index.html`
+- `sitemap.xml`
+- `robots.txt`
+- `feed.rss`
+- static e.g. `static/*` &rarr; `/`
+
+If you're not careful, it's possible you could overwrite an existing
+file e.g. `pages/test.md` and `posts/999-test.md` both map to `/test.html`. `bic`
+uses the Bash builtin `noclobber` e.g. `set -o noclobber` to help prevent these
+situations. This can be disabled by setting `BIC_OVERWRITE`.
+
 ## Showcase
 
 `bic` in the wild:
