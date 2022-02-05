@@ -143,7 +143,7 @@ build_drafts() {
     local filename filename_sans_id
     filename="$(basename "${draft}")"
     filename_sans_id="$(echo "${filename}" | sed -E 's/^[0-9]+-//')"
-    mkdir -p "${SRC_DIR}"/build/drafts
+    mkdir -p "${DEST_DIR}"/drafts
 
     (
       title="$(mk_title "${draft}")"
