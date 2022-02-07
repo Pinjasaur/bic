@@ -69,6 +69,8 @@
   run ./bic tests/overwrite
   [[ -f tests/overwrite/build/test.html ]]
   [[ "${status}" == 1 ]] # errored out trying to overwrite test.html
+  run cat tests/overwrite/build/test.html
+  [[ "${lines[0]}" == "<p>page</p>" ]]
   rm -rf tests/overwrite/build
   [[ ! -d tests/overwrite/build ]]
 }
@@ -81,4 +83,12 @@
   [[ "${lines[0]}" == "<p>post</p>" ]]
   rm -rf tests/overwrite/build
   [[ ! -d tests/overwrite/build ]]
+}
+
+@test "bic will honor a custom \$BUILD_DIR" {
+  BUILD_DIR=_site run ./bic tests/index.html
+  [[ -f tests/index.html/_site/index.html ]]
+  [[ "${status}" == 0 ]]
+  rm -rf tests/index.html/_site
+  [[ ! -d tests/index.html/_site ]]
 }
