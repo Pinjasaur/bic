@@ -60,7 +60,12 @@ html_escape() {
 }
 
 mk_title() {
-  html_escape "$(head -n 1 < "${1}" | sed -E 's/^# //')"
+  local title
+  title="$(head -n 1 < "${1}")"
+  if ! echo "${title:-}" | grep -Eq '^#'; then
+    fatal "First line must be a top-level heading (${1})"
+  fi
+  html_escape "$(echo "${title}" | sed -E 's/^# //')"
 }
 
 mk_body() {

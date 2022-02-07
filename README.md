@@ -45,6 +45,12 @@ Local server (ran in [bic-example]):
 browser-sync --watch --no-notify --extensions html build
 ```
 
+Run test suite (uses [BATS]):
+
+```bash
+bats tests/test.bats --print-output-on-failure
+```
+
 ## License
 
 [MIT].
@@ -53,3 +59,4 @@ browser-sync --watch --no-notify --extensions html build
 [bic-example]: https://github.com/Pinjasaur/bic-example
 [MIT]: https://pinjasaur.mit-license.org/2021
 [nix flakes]: https://www.tweag.io/blog/2020-05-25-flakes
+[BATS]: https://github.com/bats-core/bats-core

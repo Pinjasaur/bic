@@ -45,7 +45,7 @@ jobs:
           ignore_paths: lib
 
       - name: Test
-        run: bats tests/test.bats
+        run: bats tests/test.bats --print-output-on-failure
 
       - name: Smoketest via bic-example
         run: git clone https://github.com/Pinjasaur/bic-example.git && ./bic bic-example

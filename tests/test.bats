@@ -68,7 +68,7 @@
 @test "bic will not overwrite by default" {
   run ./bic tests/overwrite
   [[ -f tests/overwrite/build/test.html ]]
-  [[ "${status}" == 1 ]] # errored out trying to overwrite test.html
+  [[ "${status}" != 0 ]] # errored out trying to overwrite test.html
   run cat tests/overwrite/build/test.html
   [[ "${lines[0]}" == "<p>page</p>" ]]
   rm -rf tests/overwrite/build
@@ -91,4 +91,11 @@
   [[ "${status}" == 0 ]]
   rm -rf tests/index.html/_site
   [[ ! -d tests/index.html/_site ]]
+}
+
+@test "bic bails if *.md:1 doesn't start with #" {
+  run ./bic tests/heading
+  [[ "${status}" != 0 ]] # errored out because badly formed .md file
+  rm -rf tests/heading/build
+  [[ ! -d tests/heading/build ]]
 }
