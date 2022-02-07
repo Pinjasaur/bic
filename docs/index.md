@@ -60,6 +60,7 @@ generated site.
     - The title is derived from the _first line_ which _must_ begin with `#` to
     signify the top-level heading.
 - Slugs are bare e.g., `/my-cool-post` _not_ `/posts/2021/my-cool-post.html`.
+- _All_ Markdown files (pages, posts, and drafts) _must_ begin with a top-level heading on the _first line_ e.g. `# My Heading`.
 
 ## Structure
 
@@ -111,6 +112,7 @@ Optional, but you may want to change:
 
 - `DATE_FORMAT` e.g., `+%B %d, %Y` (passed into `date`, default: `+%F` &rarr; `YYYY-MM-DD`)
 - `BUILD_DIR` e.g., `_site` (configure output directory, default: `build`)
+- `BIC_OVERWRITE` (disable file overwrite protection, see [#caveats](#caveats), default: unset)
 
 ## Templating
 
