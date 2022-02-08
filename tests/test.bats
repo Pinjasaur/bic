@@ -12,7 +12,7 @@
 
 @test "bic bails on empty directory" {
   run ./bic tests/empty
-  [[ "${status}" == 1 ]]
+  [[ "${status}" != 0 ]]
 }
 
 @test "bic works with an {,__}index.html" {
@@ -93,7 +93,7 @@
   [[ ! -d tests/index.html/_site ]]
 }
 
-@test "bic bails if *.md:1 doesn't start with #" {
+@test "bic bails if first line isn't top-level heading" {
   run ./bic tests/heading
   [[ "${status}" != 0 ]] # errored out because badly formed .md file
   rm -rf tests/heading/build
