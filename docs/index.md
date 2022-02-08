@@ -60,7 +60,6 @@ generated site.
     - The title is derived from the _first line_ which _must_ begin with `#` to
     signify the top-level heading.
 - Slugs are bare e.g., `/my-cool-post` _not_ `/posts/2021/my-cool-post.html`.
-- _All_ Markdown files (pages, posts, and drafts) _must_ begin with a top-level heading on the _first line_ e.g. `# My Heading`.
 
 ## Structure
 
