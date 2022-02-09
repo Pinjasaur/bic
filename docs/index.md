@@ -56,7 +56,8 @@ generated site.
     for the first post, `998-tacocat.md` for the second, et cetera. I would
     recommend 3 or 4 digits for the Future Proof&trade;.
     - This lets the file `mtime` be used for the author's discretion. However,
-    Git [doesn't record `mtime`][mtime], so I would treat it as the "last modified" date.
+    Git [doesn't record `mtime`][mtime], so I would treat it as the "last
+    modified" date.
     - The title is derived from the _first line_ which _must_ begin with `#` to
     signify the top-level heading.
 - Slugs are bare e.g., `/my-cool-post` _not_ `/posts/2021/my-cool-post.html`.
@@ -162,6 +163,12 @@ situations. This can be disabled by setting `BIC_OVERWRITE`.
 - the demo: <https://demo.bic.sh/>
 - Mitch's blog: <https://fossen.dev/>
 
+## Support
+
+`bic` is built & maintained by [Paul].
+
+<a href='https://ko-fi.com/X8X23K1V6' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
 [Pandoc]: https://pandoc.org/
 [Mustache]: https://mustache.github.io/mustache.5.html
 [Mo]: https://github.com/tests-always-included/mo
@@ -173,3 +180,4 @@ situations. This can be disabled by setting `BIC_OVERWRITE`.
 [source]: https://github.com/Pinjasaur/bic
 [mtime]: https://stackoverflow.com/questions/1964470/whats-the-equivalent-of-subversions-use-commit-times-for-git/1964508#1964508
 [timezone]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+[Paul]: https://paulisaweso.me/
