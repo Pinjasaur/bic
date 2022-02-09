@@ -82,7 +82,7 @@ mk_date() {
 
 mk_id() {
   local id="${1%-"${2}"}"
-  if ! echo "${id:-}" | grep -Eq '^[[:digit:]]+'; then
+  if ! echo "${id:-}" | grep -Eq '^[[:digit:]]+$'; then
     fatal "Leading digit sequence is required: ${1}"
   fi
   local hashid
@@ -176,8 +176,7 @@ build_drafts() {
 build_index() {
   log "Building index.html"
 
-  local __index
-  __index=""
+  local __index=""
   for post in "${ALL_POSTS[@]}"; do
     local filename filename_sans_id title date slug id
     filename="$(basename "${post}")"
@@ -203,8 +202,7 @@ build_sitemap() {
   [[ ! -f "${SRC_DIR}/sitemap.xml" ]] && return
   log "Building sitemap.xml"
 
-  local slugs
-  slugs=()
+  local slugs=()
 
   for page in "${ALL_PAGES[@]}"; do
     local filename filename_sans_id title date slug id
@@ -246,8 +244,7 @@ build_feed() {
   [[ ! -f "${SRC_DIR}/feed.rss" || ! -f "${SRC_DIR}"/__feed.rss ]] && return
   log "Building feed.rss"
 
-  local __feed
-  __feed=""
+  local __feed=""
   for post in "${ALL_POSTS[@]}"; do
     local filename filename_sans_id title body date slug id
     filename="$(basename "${post}")"
