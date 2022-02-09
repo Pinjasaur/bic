@@ -99,3 +99,10 @@
   rm -rf tests/heading/build
   [[ ! -d tests/heading/build ]]
 }
+
+@test "bic bails if no leading digit sequence" {
+  run ./bic tests/id
+  [[ "${status}" != 0 ]] # errored out because badly named .md file
+  rm -rf tests/id/build
+  [[ ! -d tests/id/build ]]
+}

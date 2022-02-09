@@ -63,7 +63,7 @@ mk_title() {
   local title
   title="$(head -n 1 < "${1}")"
   if ! echo "${title:-}" | grep -Eq '^#'; then
-    fatal "First line must be a top-level heading (${1})"
+    fatal "First line must be a top-level heading: ${1}"
   fi
   html_escape "$(echo "${title}" | sed -E 's/^# //')"
 }
@@ -81,8 +81,13 @@ mk_date() {
 }
 
 mk_id() {
-   local -r hashid="$("${__dir}"/lib/bashids -e -s "${SALT:-bic}" -l 28 "${1%-"${2}"}")"
-   echo "${__base}_${hashid}"
+  local id="${1%-"${2}"}"
+  if ! echo "${id:-}" | grep -Eq '^\d+'; then
+    fatal "Leading digit sequence is required: ${1}"
+  fi
+  local hashid
+  hashid="$("${__dir}"/lib/bashids -e -s "${SALT:-bic}" -l 28 "${id}")"
+  echo "${__base}_${hashid}"
 }
 
 # --- The "line" between utility and core functions. ---
