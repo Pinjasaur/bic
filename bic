@@ -82,7 +82,7 @@ mk_date() {
 
 mk_id() {
   local id="${1%-"${2}"}"
-  if ! echo "${id:-}" | grep -Eq '^\d+'; then
+  if ! echo "${id:-}" | grep -Eq '^[[:digit:]]+'; then
     fatal "Leading digit sequence is required: ${1}"
   fi
   local hashid
