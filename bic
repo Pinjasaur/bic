@@ -2,7 +2,7 @@
 #
 # bic - minimal static site/blog generator.
 # Paul Esch-Laurent <p@uly.io>
-# MIT licensed: https://pinjasaur.mit-license.org/
+# MIT licensed: https://pinjasaur.mit-license.org/2021
 
 # Strict settings
 set -o errexit
@@ -83,7 +83,7 @@ mk_date() {
 mk_id() {
   local id="${1%-"${2}"}"
   if ! echo "${id:-}" | grep -Eq '^[[:digit:]]+$'; then
-    fatal "Leading digit sequence is required: ${1}"
+    fatal "Number prefix is required: ${1}"
   fi
   local hashid
   hashid="$("${__dir}"/lib/bashids -e -s "${SALT:-bic}" -l 28 "${id}")"
@@ -281,9 +281,9 @@ build() {
   log "Using source directory: ${SRC_DIR}"
   [[ -n "${BIC_OVERWRITE:-}" ]] && set +o noclobber && log "Disabled 'noclobber' redirection overwrite protection"
 
+  # pre-req check: what's missing and do we need to bail?
   [[ -d "${SRC_DIR}"/pages && -f "${SRC_DIR}"/page.html  ]] || warn "pages/ + page.html for pages"
   [[ -d "${SRC_DIR}"/posts && -f "${SRC_DIR}"/entry.html ]] || warn "posts/ + entry.html for posts"
-
   [[ -f "${SRC_DIR}"/index.html && -f "${SRC_DIR}"/__index.html ]]  || fatal "index.html (and __index.html) required"
   [[ -f "${SRC_DIR}"/feed.rss   && -f "${SRC_DIR}"/__feed.rss ]]    || warn "feed.rss (and __feed.rss) isn't required, but you likely want it"
   [[ -f "${SRC_DIR}"/sitemap.xml ]] || warn "sitemap.xml isn't required, but you likely want it"

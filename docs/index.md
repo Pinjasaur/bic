@@ -52,7 +52,7 @@ generated site.
 
 - Pages exist in `pages/*.md`. Not nested.
 - Posts & drafts exist within `posts/*.md` and `drafts/*.md`, respectively.
-    - _Ordering_ is determined by a leading digit sequence e.g., `999-post.md`
+    - _Ordering_ is determined by a number prefix e.g., `999-post.md`
     for the first post, `998-tacocat.md` for the second, et cetera. I would
     recommend 3 or 4 digits for the Future Proof&trade;.
     - This lets the file `mtime` be used for the author's discretion. However,
@@ -124,7 +124,7 @@ Some specific keys used within entries (posts or drafts) and pages:
 - `slug`, to be used in URL (does _not_ contain the `.html` file extension)
 - `title`, taken from first line of file `# ...`
 - `date`, literally the `mtime` of the file
-- `id`, the digit sequence for an entry encoded with [Hashids]
+- `id`, the number prefix for an entry encoded with [Hashids]
 - `body`, converted Markdown to HTML contents (sans title)
 
 Each entry in `posts/*.md` or `drafts/*.md` is rendered against an `entry.html`.
