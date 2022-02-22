@@ -125,52 +125,54 @@ build_pages() {
 build_posts() {
   [[ ! -d "${SRC_DIR}"/posts || ! -f "${SRC_DIR}"/entry.html ]] && return
   ALL_POSTS=()
-  for post in "${SRC_DIR}"/posts/*.md; do
-    log "Building post: ${post}"
-    ALL_POSTS+=("${post}")
+  for _post in "${SRC_DIR}"/posts/*.md; do
+    log "Building post: ${_post}"
+    ALL_POSTS+=("${_post}")
     local filename filename_sans_id
-    filename="$(basename "${post}")"
+    filename="$(basename "${_post}")"
     filename_sans_id="$(echo "${filename}" | sed -E 's/^[0-9]+-//')"
 
     (
-      title="$(mk_title "${post}")"
-      body="$(mk_body "${post}")"
-      date="$(mk_date "${post}")"
+      post=true
+      title="$(mk_title "${_post}")"
+      body="$(mk_body "${_post}")"
+      date="$(mk_date "${_post}")"
       slug="$(mk_slug "${filename_sans_id%.md}")"
       id="$(mk_id "${filename}" "${filename_sans_id}")"
-      export title body date slug id
+      export title body date slug id post
       mo \
         "${SRC_DIR}"/entry.html \
         > "${DEST_DIR}/${slug}.html"
     )
   done
-  unset post
+  unset _post
 }
 
 build_drafts() {
   [[ ! -d "${SRC_DIR}"/drafts || ! -f "${SRC_DIR}"/entry.html ]] && return
   ALL_DRAFTS=()
-  for draft in "${SRC_DIR}"/drafts/*.md; do
-    log "Building draft: ${draft}"
-    ALL_DRAFTS+=("${draft}")
+  for _draft in "${SRC_DIR}"/drafts/*.md; do
+    log "Building draft: ${_draft}"
+    ALL_DRAFTS+=("${_draft}")
     local filename filename_sans_id
-    filename="$(basename "${draft}")"
+    filename="$(basename "${_draft}")"
     filename_sans_id="$(echo "${filename}" | sed -E 's/^[0-9]+-//')"
     mkdir -p "${DEST_DIR}"/drafts
 
     (
-      title="$(mk_title "${draft}")"
-      body="$(mk_body "${draft}")"
-      date="$(mk_date "${draft}")"
+      draft=true
+      title="$(mk_title "${_draft}")"
+      body="$(mk_body "${_draft}")"
+      date="$(mk_date "${_draft}")"
       slug="$(mk_slug "${filename_sans_id%.md}")"
       id="$(mk_id "${filename}" "${filename_sans_id}")"
-      export title body date slug id
+      export title body date slug id draft
       mo \
         "${SRC_DIR}"/entry.html \
         > "${DEST_DIR}/drafts/${slug}.html"
     )
   done
-  unset draft
+  unset _draft
 }
 
 build_index() {

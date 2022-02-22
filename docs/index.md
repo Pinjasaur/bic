@@ -127,6 +127,8 @@ Some specific keys used within entries (posts or drafts) and pages:
 - `id`, the number prefix for an entry encoded with [Hashids]
 - `body`, converted Markdown to HTML contents (sans title)
 
+Drafts will have a `draft` key set. Likewise, posts will have a `post` key set.
+
 Each entry in `posts/*.md` or `drafts/*.md` is rendered against an `entry.html`.
 
 Each page in `pages/*.md` is rendered against a `page.html`.
