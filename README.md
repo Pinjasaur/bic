@@ -4,7 +4,7 @@
 
 # bic
 
-![Build Status](https://img.shields.io/github/workflow/status/Pinjasaur/bic/CI)
+![Build Status](https://img.shields.io/github/actions/workflow/status/Pinjasaur/bic/ci.yml)
 
 Opinionated minimal static site (blog) generator. Implemented in a single Bash
 script.
