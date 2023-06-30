@@ -1,3 +1,7 @@
+<style>
+    [data-dark-theme*="dark"] .markdown-body img { filter: invert(1); background: none; }
+</style>
+
 <div align="center">
   <img width="256" src="docs/logo.png" alt="bic">
 </div>
