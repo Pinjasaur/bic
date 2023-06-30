@@ -1,8 +1,5 @@
-<style>
-    [data-dark-theme*="dark"] .markdown-body img { filter: invert(1); background: none; }
-</style>
-
 <div align="center">
+  <img src="docs/style.svg" width="0" height="0" alt="css-in-readme">
   <img width="256" src="docs/logo.png" alt="bic">
 </div>
 
