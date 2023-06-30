@@ -1,6 +1,5 @@
 <div align="center">
-  <img src="docs/style.svg" width="0" height="0" alt="css-in-readme">
-  <img width="256" src="docs/logo.png" alt="bic">
+  <img width="400" src="docs/logo.svg" alt="bic">
 </div>
 
 # bic
