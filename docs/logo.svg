@@ -2,10 +2,11 @@
 	<foreignObject width="100%" height="100%">
 		<div xmlns="http://www.w3.org/1999/xhtml">
 			<style>
-        [data-color-mode="light"][data-light-theme*="dark"] img,
-        [data-color-mode="dark"][data-dark-theme*="dark"] img {
-          filter: invert(1);
-          background: none;
+        @media (prefers-color-scheme: dark) {
+          img {
+            filter: invert(1);
+            background: none;
+          }
         }
 			</style>
       <div align="center">
