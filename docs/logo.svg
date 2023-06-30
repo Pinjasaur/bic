@@ -8,7 +8,7 @@
           background: none;
         }
 			</style>
-      <img width="256" src="logo.png" alt="bic">
+      <img width="256" src="logo.png" alt="bic"/>
 		</div>
 	</foreignObject>
 </svg>
