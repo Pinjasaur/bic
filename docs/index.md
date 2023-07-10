@@ -98,8 +98,23 @@ $ tree -F --dirsfirst
 
 ## Config
 
-`bic` uses an `.env` pattern. This lets you configure required variables and add
+`bic` uses an `.env` pattern. This lets you configure ~~required~~ variables and add
 any extras that can be used within your templates. Talk about batteries included.
+
+A `.env.` file simply contains lines of `KEY=value` pairs. See the HOWTO for
+advanced usage.
+
+<details>
+  <summary>HOWTO: override config at runtime</summary>
+
+  If you, for whatever reason, want to supply an environment variable at
+  runtime _and_ have it override your `.env` then use syntax such like:
+
+  ```bash
+  ENV_VAR="${ENV_VAR:-default value}"
+  ```
+
+</details>
 
 Not-100%-required but highly-recommended config:
 
