@@ -124,3 +124,20 @@
   rm -rf tests/env-var/build
   [[ ! -d tests/env-var/build ]]
 }
+
+@test "bic allows for overridable .env" {
+  run ./bic tests/.env-defaults
+  [[ "${status}" == 0 ]]
+  run cat tests/.env-defaults/build/index.html
+  [[ "${lines[0]}" == "bar" ]]
+  rm -rf tests/.env-defaults/build
+  [[ ! -d tests/.env-defaults/build ]]
+
+  # run again, this time supplying a runtime defiition of the env var
+  FOO=baz run ./bic tests/.env-defaults
+  [[ "${status}" == 0 ]]
+  run cat tests/.env-defaults/build/index.html
+  [[ "${lines[0]}" == "baz" ]]
+  rm -rf tests/.env-defaults/build
+  [[ ! -d tests/.env-defaults/build ]]
+}
