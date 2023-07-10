@@ -77,7 +77,7 @@ mk_slug() {
 }
 
 mk_date() {
-  TZ="${TIMEZONE}" date -r "${1}" "${DATE_FORMAT}"
+  TZ="${TIMEZONE:-US/Central}" date -r "${1}" "${DATE_FORMAT:-+%F}"
 }
 
 mk_id() {
@@ -283,19 +283,23 @@ build() {
   log "Using source directory: ${SRC_DIR}"
   [[ -n "${BIC_OVERWRITE:-}" ]] && set +o noclobber && log "Disabled 'noclobber' redirection overwrite protection"
 
-  # pre-req check: what's missing and do we need to bail?
+  # File system: what's missing and do we need to bail?
   [[ -d "${SRC_DIR}"/pages && -f "${SRC_DIR}"/page.html  ]] || warn "pages/ + page.html for pages"
   [[ -d "${SRC_DIR}"/posts && -f "${SRC_DIR}"/entry.html ]] || warn "posts/ + entry.html for posts"
   [[ -f "${SRC_DIR}"/index.html && -f "${SRC_DIR}"/__index.html ]]  || fatal "index.html (and __index.html) required"
-  [[ -f "${SRC_DIR}"/feed.rss   && -f "${SRC_DIR}"/__feed.rss ]]    || warn "feed.rss (and __feed.rss) isn't required, but you likely want it"
-  [[ -f "${SRC_DIR}"/sitemap.xml ]] || warn "sitemap.xml isn't required, but you likely want it"
-  [[ -f "${SRC_DIR}"/robots.txt ]]  || warn "robots.txt isn't required, but you likely want it"
+  [[ -f "${SRC_DIR}"/feed.rss   && -f "${SRC_DIR}"/__feed.rss ]]    || warn "feed.rss (and __feed.rss) for an RSS feed"
+  [[ -f "${SRC_DIR}"/sitemap.xml ]] || warn "sitemap.xml for a sitemap for search engines"
+  [[ -f "${SRC_DIR}"/robots.txt ]]  || warn "robots.txt for web crawlers"
+
+  # Environment: anything not set that probably should be?
+  [[ -n "${SITE_AUTHOR:-}" ]] || warn "\$SITE_AUTHOR not set"
+  SITE_AUTHOR="$(html_escape "${SITE_AUTHOR:-}")"
+  [[ -n "${SITE_TITLE:-}" ]] || warn "\$SITE_TITLE not set"
+  SITE_TITLE="$(html_escape "${SITE_TITLE:-}")"
+  [[ -n "${SITE_URL:-}" ]] || warn "\$SITE_URL not set"
 
   [[ -d "${DEST_DIR}" ]] && rm -rf "${DEST_DIR}"
   mkdir -p "${DEST_DIR}" && log "Created build directory: ${DEST_DIR}"
-
-  SITE_AUTHOR="$(html_escape "${SITE_AUTHOR}")"
-  SITE_TITLE="$(html_escape "${SITE_TITLE}")"
 
   build_pages   # side effect(s): $ALL_PAGES
   build_posts   # side effect(s): $ALL_POSTS
