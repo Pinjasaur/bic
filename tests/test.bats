@@ -106,3 +106,21 @@
   rm -rf tests/id/build
   [[ ! -d tests/id/build ]]
 }
+
+@test "bic uses custom .env files" {
+  run ./bic tests/.env
+  [[ "${status}" == 0 ]]
+  run cat tests/.env/build/index.html
+  [[ "${lines[0]}" == "monkey" ]]
+  rm -rf tests/.env/build
+  [[ ! -d tests/.env/build ]]
+}
+
+@test "bic uses runtime ENV_VAR=values" {
+  SITE_URL='http://domain.tld' run ./bic tests/env-var
+  [[ "${status}" == 0 ]]
+  run cat tests/env-var/build/feed.rss
+  [[ "${lines[0]}" == "http://domain.tld" ]]
+  rm -rf tests/env-var/build
+  [[ ! -d tests/env-var/build ]]
+}
