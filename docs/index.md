@@ -101,18 +101,19 @@ $ tree -F --dirsfirst
 `bic` uses an `.env` pattern. This lets you configure required variables and add
 any extras that can be used within your templates. Talk about batteries included.
 
-Required config (you'll have a bad time with the defaults):
+Not-100%-required but highly-recommended config:
 
+- `SITE_AUTHOR` e.g. `Captain Anonymous` (the site's author)
 - `SITE_TITLE` e.g., `My Cool Thing` (the site's title)
 - `SITE_URL` e.g., `https://domain.tld` (the site's full base URL with _no_ trailing slash)
-- `TIMEZONE` e.g., `US/Central` (the [timezone] you're in)
-- `SALT` e.g. `super-random-abcxyz` (used to seed the [Hashids] encoding)
 
-Optional, but you may want to change:
+Optional, change if needed:
 
-- `DATE_FORMAT` e.g., `+%B %d, %Y` (passed into `date`, default: `+%F` &rarr; `YYYY-MM-DD`)
-- `BUILD_DIR` e.g., `_site` (configure output directory, default: `build`)
 - `BIC_OVERWRITE` (disable file overwrite protection, see [#caveats](#caveats), default: unset)
+- `BUILD_DIR` e.g., `_site` (configure output directory, default: `build`)
+- `DATE_FORMAT` e.g., `+%B %d, %Y` (passed into `date`, default: `+%F` &rarr; `YYYY-MM-DD`)
+- `SALT` e.g. `super-random-abcxyz` (used to seed the [Hashids] encoding, default: `bic`)
+- `TIMEZONE` e.g., `US/Central` (the [timezone] you're in, default: `US/Central`)
 
 ## Templating
 
