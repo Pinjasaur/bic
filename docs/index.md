@@ -4,7 +4,7 @@
 
 # Docs
 
-`bic` is an opinionated and minimal static site generator&mdash;with a focus on
+`bic`<sup class="js-release"></sup> is an opinionated and minimal static site generator&mdash;with a focus on
 blogs. View the [demo] or the [source].
 
 {% raw %}
@@ -24,7 +24,7 @@ You get the (opinionated) basics of a static site/blog (read: opinionated):
 - sitemap.xml
 - RSS feed
 
-For reproducible builds, I would recommend using `bic` with Docker: `ghcr.io/pinjasaur/bic`
+For reproducible builds, I would recommend using `bic` with Docker: `ghcr.io/pinjasaur/bic:latest`
 
 Essentially, mount your source directory to `/src`
 
@@ -101,20 +101,13 @@ $ tree -F --dirsfirst
 `bic` uses an `.env` pattern. This lets you configure ~~required~~ variables and add
 any extras that can be used within your templates. Talk about batteries included.
 
-A `.env.` file simply contains lines of `KEY=value` pairs. See the HOWTO for
-advanced usage.
+A `.env` file simply contains lines of `KEY=value` pairs. If you, for whatever
+reason, want to supply an environment variable at runtime _and_ have it
+override your `.env` then use syntax such like:
 
-<details>
-  <summary>HOWTO: override config at runtime</summary>
-
-  If you, for whatever reason, want to supply an environment variable at
-  runtime _and_ have it override your `.env` then use syntax such like:
-
-  ```bash
-  ENV_VAR="${ENV_VAR:-default value}"
-  ```
-
-</details>
+```bash
+ENV_VAR="${ENV_VAR:-default value}"
+```
 
 Not-100%-required but highly-recommended config:
 
@@ -199,3 +192,12 @@ situations. This can be disabled by setting `BIC_OVERWRITE`.
 [mtime]: https://stackoverflow.com/questions/1964470/whats-the-equivalent-of-subversions-use-commit-times-for-git/1964508#1964508
 [timezone]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 [Paul]: https://paulisaweso.me/
+
+<script>
+(async () => {
+  const response = await fetch(`https://api.github.com/repos/pinjasaur/bic/releases`)
+  const releases = await response.json()
+  document.querySelectorAll(`.js-release`).forEach($el => $el.textContent = releases[0].tag_name)
+  document.querySelectorAll(`code`).forEach($el => $el.innerHTML = $el.innerHTML.replace(`bic:latest`, `bic:${releases[0].tag_name)}`)
+})();
+</script>
