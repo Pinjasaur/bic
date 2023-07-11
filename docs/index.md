@@ -98,21 +98,37 @@ $ tree -F --dirsfirst
 
 ## Config
 
-`bic` uses an `.env` pattern. This lets you configure required variables and add
+`bic` uses an `.env` pattern. This lets you configure ~~required~~ variables and add
 any extras that can be used within your templates. Talk about batteries included.
 
-Required config (you'll have a bad time with the defaults):
+A `.env.` file simply contains lines of `KEY=value` pairs. See the HOWTO for
+advanced usage.
 
+<details>
+  <summary>HOWTO: override config at runtime</summary>
+
+  If you, for whatever reason, want to supply an environment variable at
+  runtime _and_ have it override your `.env` then use syntax such like:
+
+  ```bash
+  ENV_VAR="${ENV_VAR:-default value}"
+  ```
+
+</details>
+
+Not-100%-required but highly-recommended config:
+
+- `SITE_AUTHOR` e.g. `Captain Anonymous` (the site's author)
 - `SITE_TITLE` e.g., `My Cool Thing` (the site's title)
 - `SITE_URL` e.g., `https://domain.tld` (the site's full base URL with _no_ trailing slash)
-- `TIMEZONE` e.g., `US/Central` (the [timezone] you're in)
-- `SALT` e.g. `super-random-abcxyz` (used to seed the [Hashids] encoding)
 
-Optional, but you may want to change:
+Optional, change if needed:
 
-- `DATE_FORMAT` e.g., `+%B %d, %Y` (passed into `date`, default: `+%F` &rarr; `YYYY-MM-DD`)
-- `BUILD_DIR` e.g., `_site` (configure output directory, default: `build`)
 - `BIC_OVERWRITE` (disable file overwrite protection, see [#caveats](#caveats), default: unset)
+- `BUILD_DIR` e.g., `_site` (configure output directory, default: `build`)
+- `DATE_FORMAT` e.g., `+%B %d, %Y` (passed into `date`, default: `+%F` &rarr; `YYYY-MM-DD`)
+- `SALT` e.g. `super-random-abcxyz` (used to seed the [Hashids] encoding, default: `bic`)
+- `TIMEZONE` e.g., `US/Central` (the [timezone] you're in, default: `US/Central`)
 
 ## Templating
 
