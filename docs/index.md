@@ -178,7 +178,7 @@ situations. This can be disabled by setting `BIC_OVERWRITE`.
 
 `bic` is built & maintained by [Paul].
 
-<a href='https://ko-fi.com/X8X23K1V6' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X8X23K1V6)
 
 [Pandoc]: https://pandoc.org/
 [Mustache]: https://mustache.github.io/mustache.5.html
