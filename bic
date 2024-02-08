@@ -69,7 +69,26 @@ mk_title() {
 }
 
 mk_body() {
-  pandoc "${PANDOC_ARGS[@]}" <(tail -n +2 "${1}")
+  local prefix tagline
+  prefix="tags:"
+  tagline="$(head -n 2 < "${1}" | tail -n 1)"
+  if [[ "$tagline" == "$prefix"* ]]; then
+    pandoc "${PANDOC_ARGS[@]}" <(tail -n +3 "${1}")
+  else
+    pandoc "${PANDOC_ARGS[@]}" <(tail -n +2 "${1}")
+  fi
+}
+
+mk_tags() {
+  local tags prefix tagline split
+  prefix="tags:"
+  tagline="$(head -n 2 < "${1}" | tail -n 1)"
+  if [[ "$tagline" == "$prefix"* ]]; then
+    # tags="${tagline#"$prefix"}"
+    split="$(echo "${tagline#"$prefix"}" | tr -d '[:space:]')"
+    IFS=',' read -r -a tags <<< "$split"
+  fi
+  echo "${tags[@]}"
 }
 
 mk_slug() {
@@ -125,21 +144,35 @@ build_pages() {
 build_posts() {
   [[ ! -d "${SRC_DIR}"/posts || ! -f "${SRC_DIR}"/entry.html ]] && return
   ALL_POSTS=()
+  declare -A ALL_TAGS
   for _post in "${SRC_DIR}"/posts/*.md; do
     log "Building post: ${_post}"
     ALL_POSTS+=("${_post}")
-    local filename filename_sans_id
+    local filename filename_sans_id tags
+    tags=()
     filename="$(basename "${_post}")"
     filename_sans_id="$(echo "${filename}" | sed -E 's/^[0-9]+-//')"
+    for _tag in $(mk_tags "${_post}"); do
+      tags+=("${_tag}")
+      # TODO: how to delimit?
+      ALL_TAGS["${_tag}"]+=" ${_post} "
+    done
 
     (
       post=true
+      # TODO: probably remove
+      # works
+      # mapfile -t tags < <(mk_tags "${_post}")
+      # worse option: forces word splitting
+      # tags=($(mk_tags "${_post}"))
+      # hard coding for testing
+      # tags=("one" "two" "three")
       title="$(mk_title "${_post}")"
       body="$(mk_body "${_post}")"
       date="$(mk_date "${_post}")"
       slug="$(mk_slug "${filename_sans_id%.md}")"
       id="$(mk_id "${filename}" "${filename_sans_id}")"
-      export title body date slug id post
+      export title body date slug id post tags
       mo \
         "${SRC_DIR}"/entry.html \
         > "${DEST_DIR}/${slug}.html"
@@ -290,6 +323,7 @@ build() {
   [[ -f "${SRC_DIR}"/feed.rss   && -f "${SRC_DIR}"/__feed.rss ]]    || warn "feed.rss (and __feed.rss) for an RSS feed"
   [[ -f "${SRC_DIR}"/sitemap.xml ]] || warn "sitemap.xml for a sitemap for search engines"
   [[ -f "${SRC_DIR}"/robots.txt ]]  || warn "robots.txt for web crawlers"
+  # TODO: add logic for tags?
 
   # Environment: anything not set that probably should be?
   [[ -n "${SITE_AUTHOR:-}" ]] || warn "\$SITE_AUTHOR not set"
@@ -302,8 +336,10 @@ build() {
   mkdir -p "${DEST_DIR}" && log "Created build directory: ${DEST_DIR}"
 
   build_pages   # side effect(s): $ALL_PAGES
-  build_posts   # side effect(s): $ALL_POSTS
+  build_posts   # side effect(s): $ALL_POSTS, $ALL_TAGS
   build_drafts  # side effect(s): $ALL_DRAFTS
+  # TODO: implement
+  # build_tags    # uses $ALL_TAGS, $ALL_PAGES
   build_index   # uses $ALL_POSTS
   build_sitemap # uses $ALL_PAGES, $ALL_POSTS
   build_robots

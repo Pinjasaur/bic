@@ -133,11 +133,18 @@
   rm -rf tests/.env-defaults/build
   [[ ! -d tests/.env-defaults/build ]]
 
-  # run again, this time supplying a runtime defiition of the env var
+  # run again, this time supplying a runtime definition of the env var
   FOO=baz run ./bic tests/.env-defaults
   [[ "${status}" == 0 ]]
   run cat tests/.env-defaults/build/index.html
   [[ "${lines[0]}" == "baz" ]]
   rm -rf tests/.env-defaults/build
   [[ ! -d tests/.env-defaults/build ]]
+}
+
+@test "bic does basic tags" {
+  run ./bic tests/tags
+  [[ "${status}" == 0 ]]
+  # rm -rf tests/id/build
+  # [[ ! -d tests/id/build ]]
 }
