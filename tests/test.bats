@@ -155,6 +155,9 @@
   [[ "${status}" == 0 ]]
   [[ -f tests/tags/build/tags.html ]]
   [[ -f tests/tags/build/tags/one.html ]]
+  run cat tests/tags/build/sitemap.xml
+  [[ "${output}" == *"tags"* ]]
+  [[ "${output}" == *"tags/one"* ]]
   rm -rf tests/tags/build
   [[ ! -d tests/tags/build ]]
 }

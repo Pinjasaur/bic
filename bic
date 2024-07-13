@@ -305,6 +305,13 @@ build_sitemap() {
     slugs+=("$(html_escape "${slug}")")
   done
 
+  if [[ -f "${SRC_DIR}"/tags.html && -f "${SRC_DIR}"/tag.html && -f "${SRC_DIR}"/__tag.html ]]; then
+    slugs+=("$(html_escape "tags")")
+    for tag in "${!ALL_TAGS[@]}"; do
+      slugs+=("$(html_escape "tags/${tag}")")
+    done
+  fi
+
   (
     export slugs
     mo \
