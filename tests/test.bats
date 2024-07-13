@@ -150,10 +150,11 @@
   [[ ! -d tests/no-pipe/build ]]
 }
 
-
-@test "bic does basic tags" {
+@test "bic does tags" {
   run ./bic tests/tags
   [[ "${status}" == 0 ]]
-  # rm -rf tests/id/build
-  # [[ ! -d tests/id/build ]]
+  [[ -f tests/tags/build/tags.html ]]
+  [[ -f tests/tags/build/tags/one.html ]]
+  rm -rf tests/tags/build
+  [[ ! -d tests/tags/build ]]
 }
