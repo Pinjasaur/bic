@@ -142,6 +142,15 @@
   [[ ! -d tests/.env-defaults/build ]]
 }
 
+@test "bic doesn't allow posts with a pipe '|' in the filename" {
+  run ./bic tests/no-pipe
+  [[ "${status}" != 0 ]]
+  [[ "${output}" == *"cannot contain a pipe literal"* ]]
+  rm -rf tests/no-pipe/build
+  [[ ! -d tests/no-pipe/build ]]
+}
+
+
 @test "bic does basic tags" {
   run ./bic tests/tags
   [[ "${status}" == 0 ]]

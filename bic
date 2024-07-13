@@ -147,6 +147,7 @@ build_posts() {
   declare -A ALL_TAGS
   for _post in "${SRC_DIR}"/posts/*.md; do
     log "Building post: ${_post}"
+    [[ "${_post}" =~ \| ]] && fatal "Filename cannot contain a pipe literal (used internally for delimitting tagged entries)"
     ALL_POSTS+=("${_post}")
     local filename filename_sans_id tags
     tags=()
@@ -155,7 +156,11 @@ build_posts() {
     for _tag in $(mk_tags "${_post}"); do
       tags+=("${_tag}")
       # TODO: how to delimit?
-      ALL_TAGS["${_tag}"]+=" ${_post} "
+      if [[ -n "${ALL_TAGS["${_tag}"]:-}" ]]; then
+        ALL_TAGS["${_tag}"]+="|${_post}"
+      else
+        ALL_TAGS["${_tag}"]="${_post}"
+      fi
     done
 
     (
