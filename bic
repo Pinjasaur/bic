@@ -25,6 +25,8 @@ source "${__dir}"/lib/mo
 PANDOC_EXTS="+autolink_bare_uris+gfm_auto_identifiers+task_lists"
 PANDOC_ARGS=(-f markdown"${PANDOC_EXTS:-}" -t html5 --columns 1000 --no-highlight --email-obfuscation=none)
 
+TAG_PREFIX="tags:"
+
 # Print out usage information
 usage() {
   cat <<HEREDOC
@@ -59,6 +61,13 @@ html_escape() {
   echo "${1:-}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&#39;/g'
 }
 
+__has_tags() {
+  local tagline
+  tagline="$(head -n 2 < "${1}" | tail -n 1)"
+  [[ "$tagline" == "$TAG_PREFIX"* ]] && return 0
+  return 1
+}
+
 mk_title() {
   local title
   title="$(head -n 1 < "${1}")"
@@ -69,10 +78,7 @@ mk_title() {
 }
 
 mk_body() {
-  local prefix tagline
-  prefix="tags:"
-  tagline="$(head -n 2 < "${1}" | tail -n 1)"
-  if [[ "$tagline" == "$prefix"* ]]; then
+  if __has_tags "${1}"; then
     pandoc "${PANDOC_ARGS[@]}" <(tail -n +3 "${1}")
   else
     pandoc "${PANDOC_ARGS[@]}" <(tail -n +2 "${1}")
@@ -80,12 +86,10 @@ mk_body() {
 }
 
 mk_tags() {
-  local tags prefix tagline split
-  prefix="tags:"
-  tagline="$(head -n 2 < "${1}" | tail -n 1)"
-  if [[ "$tagline" == "$prefix"* ]]; then
-    # tags="${tagline#"$prefix"}"
-    split="$(echo "${tagline#"$prefix"}" | tr -d '[:space:]')"
+  if __has_tags "${1}"; then
+    local tagline
+    tagline="$(head -n 2 < "${1}" | tail -n 1)"
+    split="$(echo "${tagline#"$TAG_PREFIX"}" | tr -d '[:space:]')"
     IFS=',' read -r -a tags <<< "$split"
   fi
   echo "${tags[@]}"
@@ -148,8 +152,7 @@ build_posts() {
     log "Building post: ${_post}"
     [[ "${_post}" =~ \| ]] && fatal "Filename cannot contain a pipe literal (used internally for delimitting tagged entries)"
     ALL_POSTS+=("${_post}")
-    local filename filename_sans_id tags
-    tags=()
+    local filename filename_sans_id tags=()
     filename="$(basename "${_post}")"
     filename_sans_id="$(echo "${filename}" | sed -E 's/^[0-9]+-//')"
     for _tag in $(mk_tags "${_post}"); do
