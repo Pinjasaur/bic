@@ -189,9 +189,14 @@ build_drafts() {
   for _draft in "${SRC_DIR}"/drafts/*.md; do
     log "Building draft: ${_draft}"
     ALL_DRAFTS+=("${_draft}")
-    local filename filename_sans_id
+    local filename filename_sans_id tags=()
     filename="$(basename "${_draft}")"
     filename_sans_id="$(echo "${filename}" | sed -E 's/^[0-9]+-//')"
+    for _tag in $(mk_tags "${_post}"); do
+      local slug
+      slug="$(mk_slug "${_tag}")"
+      tags+=("${slug}")
+    done
     mkdir -p "${DEST_DIR}"/drafts
 
     (
@@ -201,7 +206,8 @@ build_drafts() {
       date="$(mk_date "${_draft}")"
       slug="$(mk_slug "${filename_sans_id%.md}")"
       id="$(mk_id "${filename}" "${filename_sans_id}")"
-      export title body date slug id draft
+      [[ -n "${tags[*]}" ]] && has_tags=true
+      export title body date slug id draft has_tags
       mo \
         "${SRC_DIR}"/entry.html \
         > "${DEST_DIR}/drafts/${slug}.html"

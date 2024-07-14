@@ -155,9 +155,11 @@
   [[ "${status}" == 0 ]]
   [[ -f tests/tags/build/tags.html ]]
   [[ -f tests/tags/build/tags/one.html ]]
+  [[ ! -f tests/tags/build/tags/draft.html ]]
   run cat tests/tags/build/sitemap.xml
   [[ "${output}" == *"tags"* ]]
   [[ "${output}" == *"tags/one"* ]]
+  [[ "${output}" != *"tags/draft"* ]]
   run cat tests/tags/build/test.html
   [[ "${output}" == *"has_tags defined"* ]]
   rm -rf tests/tags/build
