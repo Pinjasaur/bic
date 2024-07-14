@@ -173,7 +173,8 @@ build_posts() {
       date="$(mk_date "${_post}")"
       slug="$(mk_slug "${filename_sans_id%.md}")"
       id="$(mk_id "${filename}" "${filename_sans_id}")"
-      export title body date slug id post tags
+      [[ -n "${tags[*]}" ]] && has_tags=true
+      export title body date slug id post tags has_tags
       mo \
         "${SRC_DIR}"/entry.html \
         > "${DEST_DIR}/${slug}.html"

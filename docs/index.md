@@ -135,8 +135,10 @@ Some specific keys used within entries (posts or drafts) and pages:
 - `slug`, to be used in URL (does _not_ contain the `.html` file extension)
 - `title`, taken from first line of file `# ...`
 - `date`, literally the `mtime` of the file
-- `id`, the number prefix for an entry encoded with [Hashids]
+- `id`, the number prefix for an _entry_ encoded with [Hashids]
 - `body`, converted Markdown to HTML contents (sans title)
+- `tags`, list of all tags for the _entry_
+- `has_tags`, if the _entry_ has tags (useful for conditional templating)
 
 Drafts will have a `draft` key set. Likewise, posts will have a `post` key set.
 

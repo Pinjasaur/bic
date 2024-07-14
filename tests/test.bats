@@ -158,6 +158,8 @@
   run cat tests/tags/build/sitemap.xml
   [[ "${output}" == *"tags"* ]]
   [[ "${output}" == *"tags/one"* ]]
+  run cat tests/tags/build/test.html
+  [[ "${output}" == *"has_tags defined"* ]]
   rm -rf tests/tags/build
   [[ ! -d tests/tags/build ]]
 }
