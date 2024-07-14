@@ -17,8 +17,6 @@ __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 __file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
 __base="$(basename "${__file}" .sh)"
 
-# shellcheck disable=SC2034
-MO_FALSE_IS_EMPTY=true
 # shellcheck disable=SC1091,SC1090
 source "${__dir}"/lib/mo
 
@@ -175,9 +173,7 @@ build_posts() {
       date="$(mk_date "${_post}")"
       slug="$(mk_slug "${filename_sans_id%.md}")"
       id="$(mk_id "${filename}" "${filename_sans_id}")"
-      has_tags=false
-      [[ -n "${tags[*]}" ]] && has_tags=true
-      export title body date slug id post tags has_tags
+      export title body date slug id post tags
       mo \
         "${SRC_DIR}"/entry.html \
         > "${DEST_DIR}/${slug}.html"
@@ -209,9 +205,7 @@ build_drafts() {
       date="$(mk_date "${_draft}")"
       slug="$(mk_slug "${filename_sans_id%.md}")"
       id="$(mk_id "${filename}" "${filename_sans_id}")"
-      has_tags=false
-      [[ -n "${tags[*]}" ]] && has_tags=true
-      export title body date slug id draft tags has_tags
+      export title body date slug id draft tags
       mo \
         "${SRC_DIR}"/entry.html \
         > "${DEST_DIR}/drafts/${slug}.html"

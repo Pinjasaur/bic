@@ -161,7 +161,7 @@
   [[ "${output}" == *"tags/one"* ]]
   [[ "${output}" != *"tags/draft"* ]]
   run cat tests/tags/build/test.html
-  [[ "${output}" == *"has_tags defined"* ]]
+  [[ "${output}" == *"has tags without the dedicated key"* ]]
   rm -rf tests/tags/build
   [[ ! -d tests/tags/build ]]
 }

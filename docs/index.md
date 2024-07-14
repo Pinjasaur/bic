@@ -138,7 +138,6 @@ Some specific keys used within entries (posts or drafts) and pages:
 - `id`, the number prefix for an _entry_ encoded with [Hashids]
 - `body`, converted Markdown to HTML contents (sans title)
 - `tags`, list of all tags for the _entry_
-- `has_tags`, if the _entry_ has tags (useful for conditional templating)
 
 Drafts will have a `draft` key set. Likewise, posts will have a `post` key set.
 
