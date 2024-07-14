@@ -23,6 +23,7 @@ You get the (opinionated) basics of a static site/blog (read: opinionated):
 - robots.txt
 - sitemap.xml
 - RSS feed
+- tags for organizing entries
 
 For reproducible builds, I would recommend using `bic` with Docker: `ghcr.io/pinjasaur/bic:latest`
 
@@ -44,7 +45,6 @@ nix run github:Pinjasaur/bic --command bic .
 
 to run `bic` in the current directory and spit out a `build` directory with your
 generated site.
- 
 
 ## Opinionated?
 
@@ -52,21 +52,23 @@ generated site.
 
 - Pages exist in `pages/*.md`. Not nested.
 - Posts & drafts exist within `posts/*.md` and `drafts/*.md`, respectively.
-    - _Ordering_ is determined by a number prefix e.g., `999-post.md`
-    for the first post, `998-tacocat.md` for the second, et cetera. I would
-    recommend 3 or 4 digits for the Future Proof&trade;.
-    - This lets the file `mtime` be used for the author's discretion. However,
-    Git [doesn't record `mtime`][mtime], so I would treat it as the "last
-    modified" date.
-    - The title is derived from the _first line_ which _must_ begin with `#` to
-    signify the top-level heading.
+  - _Ordering_ is determined by a number prefix e.g., `999-post.md`
+  for the first post, `998-tacocat.md` for the second, et cetera. I would
+  recommend 3 or 4 digits for the Future Proof&trade;.
+  - This lets the file `mtime` be used for the author's discretion. However,
+  Git [doesn't record `mtime`][mtime], so I would treat it as the "last
+  modified" date.
+  - The title is derived from the _first line_ which MUST begin with `#` to
+  signify the top-level heading.
+  - Entries can be organized via tags, which MUST be defined _immediately_
+  below the title using syntax such like: `tags: foo, bar-baz`.
 - Slugs are bare e.g., `/my-cool-post` _not_ `/posts/2021/my-cool-post.html`.
 
 ## Structure
 
 For a fully-featured example, view the demo source code: <https://github.com/Pinjasaur/bic-example>
 
-```
+```plaintext
 $ tree -F --dirsfirst
 .
 ├── drafts/
@@ -133,8 +135,9 @@ Some specific keys used within entries (posts or drafts) and pages:
 - `slug`, to be used in URL (does _not_ contain the `.html` file extension)
 - `title`, taken from first line of file `# ...`
 - `date`, literally the `mtime` of the file
-- `id`, the number prefix for an entry encoded with [Hashids]
+- `id`, the number prefix for an _entry_ encoded with [Hashids]
 - `body`, converted Markdown to HTML contents (sans title)
+- `tags`, list of all tags for the _entry_
 
 Drafts will have a `draft` key set. Likewise, posts will have a `post` key set.
 
@@ -143,9 +146,12 @@ Each entry in `posts/*.md` or `drafts/*.md` is rendered against an `entry.html`.
 Each page in `pages/*.md` is rendered against a `page.html`.
 
 {% raw %}
-`index.html` and `feed.rss` both use a [double-underscore-prefixed] template
-partial of the same name e.g., `{{__index}}` from `__index.html`.
+`index.html`, `feed.rss`, and `tag.html` use a [double-underscore-prefixed]
+template partial of the same name e.g., `{{__index}}` from `__index.html`.
 {% endraw %}
+
+`tags.html` has access to an associative array of `all_tags` mapped to the
+number of entries tagged by that tag.
 
 `sitemap.xml` has access to an array of slugs with the `slugs` key.
 
@@ -156,6 +162,7 @@ There is an order-of-operations for how files are built, as follows:
 - pages e.g. `pages/*.md`
 - posts e.g. `posts/*.md`
 - drafts e.g. `drafts/*.md`
+- tags (all tags and tagged entries)
 - `index.html`
 - `sitemap.xml`
 - `robots.txt`
@@ -173,6 +180,7 @@ situations. This can be disabled by setting `BIC_OVERWRITE`.
 
 - the demo: <https://demo.bic.sh/>
 - Mitch's blog: <https://fossen.dev/>
+- Evan's blog: <https://evanhstanton.github.io/>
 
 ## Support
 

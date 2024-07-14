@@ -1,0 +1,13 @@
+{{title}}
+
+{{body}}
+
+{{#tags}}
+  - {{.}}
+{{/tags}}
+
+{{#ALL_TAGS}}
+- {{@key}} {{.}}
+{{/ALL_TAGS}}
+
+{{#tags.0}}has tags without the dedicated key{{/tags.0}}

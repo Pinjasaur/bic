@@ -18,19 +18,19 @@ Check out the [docs] or [bic-example] repository.
 Build (local develop):
 
 ```bash
-docker build . -t bic:local
+docker build --platform linux/amd64 . -t bic:local
 ```
 
 Run (local develop) with [bic-example]:
 
 ```bash
-docker run --rm -it -v $PWD/../bic-example:/src -v $PWD:/app --entrypoint bash bic:local
+docker run --platform linux/amd64 --rm -it -v $PWD/../bic-example:/src -v $PWD:/app --entrypoint bash bic:local
 ```
 
 Run (just build) with [bic-example]:
 
 ```bash
-docker run --rm -v $PWD/../bic-example:/src bic:local
+docker run --platform linux/amd64 --rm -v $PWD/../bic-example:/src bic:local
 ```
 
 Run using [nix flakes]
@@ -42,7 +42,7 @@ nix shell github:Pinjasaur/bic --command bic $PWD/../bic-example
 Local server (ran in [bic-example]):
 
 ```bash
-browser-sync --watch --no-notify --extensions html build
+npx -y browser-sync --watch --no-notify --extensions html build
 ```
 
 Run test suite (uses [BATS]):

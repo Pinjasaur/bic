@@ -133,11 +133,35 @@
   rm -rf tests/.env-defaults/build
   [[ ! -d tests/.env-defaults/build ]]
 
-  # run again, this time supplying a runtime defiition of the env var
+  # run again, this time supplying a runtime definition of the env var
   FOO=baz run ./bic tests/.env-defaults
   [[ "${status}" == 0 ]]
   run cat tests/.env-defaults/build/index.html
   [[ "${lines[0]}" == "baz" ]]
   rm -rf tests/.env-defaults/build
   [[ ! -d tests/.env-defaults/build ]]
+}
+
+@test "bic doesn't allow posts with a pipe '|' in the filename" {
+  run ./bic tests/no-pipe
+  [[ "${status}" != 0 ]]
+  [[ "${output}" == *"cannot contain a pipe literal"* ]]
+  rm -rf tests/no-pipe/build
+  [[ ! -d tests/no-pipe/build ]]
+}
+
+@test "bic does tags" {
+  run ./bic tests/tags
+  [[ "${status}" == 0 ]]
+  [[ -f tests/tags/build/tags.html ]]
+  [[ -f tests/tags/build/tags/one.html ]]
+  [[ ! -f tests/tags/build/tags/draft.html ]]
+  run cat tests/tags/build/sitemap.xml
+  [[ "${output}" == *"tags"* ]]
+  [[ "${output}" == *"tags/one"* ]]
+  [[ "${output}" != *"tags/draft"* ]]
+  run cat tests/tags/build/test.html
+  [[ "${output}" == *"has tags without the dedicated key"* ]]
+  rm -rf tests/tags/build
+  [[ ! -d tests/tags/build ]]
 }
