@@ -192,7 +192,7 @@ build_drafts() {
     local filename filename_sans_id tags=()
     filename="$(basename "${_draft}")"
     filename_sans_id="$(echo "${filename}" | sed -E 's/^[0-9]+-//')"
-    for _tag in $(mk_tags "${_post}"); do
+    for _tag in $(mk_tags "${_draft}"); do
       local slug
       slug="$(mk_slug "${_tag}")"
       tags+=("${slug}")
