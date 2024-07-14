@@ -42,7 +42,7 @@ nix shell github:Pinjasaur/bic --command bic $PWD/../bic-example
 Local server (ran in [bic-example]):
 
 ```bash
-browser-sync --watch --no-notify --extensions html build
+npx -y browser-sync --watch --no-notify --extensions html build
 ```
 
 Run test suite (uses [BATS]):
