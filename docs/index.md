@@ -60,7 +60,7 @@ generated site.
   modified" date.
   - The title is derived from the _first line_ which _must_ begin with `#` to
   signify the top-level heading.
-  - Entries can be organized via tags, which much be defined _immediately_
+  - Entries can be organized via tags, which MUST be defined _immediately_
   below the title using syntax such like: `tags: foo, bar-baz`.
 - Slugs are bare e.g., `/my-cool-post` _not_ `/posts/2021/my-cool-post.html`.
 
