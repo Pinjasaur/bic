@@ -58,7 +58,7 @@ generated site.
   - This lets the file `mtime` be used for the author's discretion. However,
   Git [doesn't record `mtime`][mtime], so I would treat it as the "last
   modified" date.
-  - The title is derived from the _first line_ which _must_ begin with `#` to
+  - The title is derived from the _first line_ which MUST begin with `#` to
   signify the top-level heading.
   - Entries can be organized via tags, which MUST be defined _immediately_
   below the title using syntax such like: `tags: foo, bar-baz`.
