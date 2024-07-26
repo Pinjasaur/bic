@@ -15,7 +15,7 @@ on:
 
 env:
   IMAGE_NAME: bic
-  PANDOC_VERSION: 2.17.0.1
+  PANDOC_VERSION: 3.2.1
   BATS_VERSION: 1.11.0
 
 jobs:

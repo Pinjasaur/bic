@@ -1,6 +1,6 @@
 FROM ubuntu:24.04
 
-ENV PANDOC_VERSION=2.17.0.1
+ENV PANDOC_VERSION=3.2.1
 
 RUN apt-get update && apt-get install -y curl tzdata && \
   curl -sL https://github.com/jgm/pandoc/releases/download/$PANDOC_VERSION/pandoc-$PANDOC_VERSION-1-amd64.deb -o pandoc-$PANDOC_VERSION.deb && \
