@@ -171,7 +171,7 @@ There is an order-of-operations for how files are built, as follows:
 
 If you're not careful, it's possible you could overwrite an existing file e.g.
 `pages/test.md` and `posts/999-test.md` both map to `/test.html`. `bic` uses the
-Bash builtin `noclobber` e.g. `set -o noclobber` along with `--no-clobber` for
+Bash builtin `noclobber` e.g. `set -o noclobber` along with `--interactive` for
 `cp` to protect against these scenarios. This can be disabled by setting
 `BIC_OVERWRITE`. You've been warned.
 
