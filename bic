@@ -368,9 +368,10 @@ build_static() {
   log "Building /static -> /"
   # Archive by default
   local args=(-a)
-  # And, don't clobber files unless explicitly disabled
-  [[ -z "${BIC_OVERWRITE:-}" ]] && args+=(-n)
-  cp "${args[@]}" "${SRC_DIR}"/static/. "${DEST_DIR}"
+  # And run interactively so as to not clobber files unless explicitly disabled
+  [[ -z "${BIC_OVERWRITE:-}" ]] && args+=(-i)
+  # shellcheck disable=SC2216
+  echo n | cp "${args[@]}" "${SRC_DIR}"/static/. "${DEST_DIR}"
 }
 
 build() {
