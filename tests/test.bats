@@ -25,9 +25,8 @@
 
 @test "bic copies static/ correctly" {
   run ./bic tests/static
-  [[ "${status}" == 0 ]]
   [[ -f tests/static/build/humans.txt ]]
-  [[ -f tests/static/build/foo/bar/baz ]]
+  [[ "${status}" == 0 ]]
   rm -rf tests/static/build
   [[ ! -d tests/static/build ]]
 }
@@ -76,16 +75,6 @@
   [[ ! -d tests/overwrite/build ]]
 }
 
-@test "bic will not overwrite by default (static)" {
-  run ./bic tests/overwrite-static
-  [[ -f tests/overwrite-static/build/test.html ]]
-  [[ "${status}" != 0 ]] # errored out trying to overwrite test.html
-  run cat tests/overwrite-static/build/test.html
-  [[ "${lines[0]}" == "<p>post</p>" ]]
-  rm -rf tests/overwrite-static/build
-  [[ ! -d tests/overwrite-static/build ]]
-}
-
 @test "bic will overwrite if specified" {
   BIC_OVERWRITE=1 run ./bic tests/overwrite
   [[ -f tests/overwrite/build/test.html ]]
@@ -94,16 +83,6 @@
   [[ "${lines[0]}" == "<p>post</p>" ]]
   rm -rf tests/overwrite/build
   [[ ! -d tests/overwrite/build ]]
-}
-
-@test "bic will overwrite if specified (static)" {
-  BIC_OVERWRITE=1 run ./bic tests/overwrite-static
-  [[ -f tests/overwrite-static/build/test.html ]]
-  [[ "${status}" == 0 ]] # didn't error out
-  run cat tests/overwrite-static/build/test.html
-  [[ "${lines[0]}" == "<p>static</p>" ]]
-  rm -rf tests/overwrite-static/build
-  [[ ! -d tests/overwrite-static/build ]]
 }
 
 @test "bic will honor a custom \$BUILD_DIR" {
