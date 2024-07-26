@@ -66,7 +66,7 @@ generated site.
 
 ## Structure
 
-For a fully-featured example, view the demo source code: <https://github.com/Pinjasaur/bic-example>
+For a fully-featured example, view the [demo] source code: <https://github.com/Pinjasaur/bic-example>
 
 ```plaintext
 $ tree -F --dirsfirst
@@ -169,10 +169,11 @@ There is an order-of-operations for how files are built, as follows:
 - `feed.rss`
 - static e.g. `static/*` &rarr; `/`
 
-If you're not careful, it's possible you could overwrite an existing
-file e.g. `pages/test.md` and `posts/999-test.md` both map to `/test.html`. `bic`
-uses the Bash builtin `noclobber` e.g. `set -o noclobber` to help prevent these
-situations. This can be disabled by setting `BIC_OVERWRITE`.
+If you're not careful, it's possible you could overwrite an existing file e.g.
+`pages/test.md` and `posts/999-test.md` both map to `/test.html`. `bic` uses the
+Bash builtin `noclobber` e.g. `set -o noclobber` along with `--no-clobber` for
+`cp` to protect against these scenarios. This can be disabled by setting
+`BIC_OVERWRITE`. You've been warned.
 
 ## Showcase
 
@@ -181,6 +182,7 @@ situations. This can be disabled by setting `BIC_OVERWRITE`.
 - the demo: <https://demo.bic.sh/>
 - Mitch's blog: <https://fossen.dev/>
 - Evan's blog: <https://evanhstanton.github.io/>
+- you?
 
 ## Support
 
