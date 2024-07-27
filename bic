@@ -366,7 +366,12 @@ build_feed() {
 build_static() {
   [[ ! -d "${SRC_DIR}"/static ]] && return
   log "Building /static -> /"
-  cp -a "${SRC_DIR}"/static/. "${DEST_DIR}"
+  # Archive by default
+  local args=(-a)
+  # And run interactively so as to not clobber files unless explicitly disabled
+  [[ -z "${BIC_OVERWRITE:-}" ]] && args+=(-i)
+  # shellcheck disable=SC2216
+  echo n | cp "${args[@]}" "${SRC_DIR}"/static/. "${DEST_DIR}"
 }
 
 build() {
@@ -376,7 +381,7 @@ build() {
   [[ "${SRC_DIR}" != "${__dir}" ]] && [[ -f "${SRC_DIR}"/.env ]] && src "${SRC_DIR}"/.env && log "Custom .env sourced"
   DEST_DIR="${SRC_DIR}/${BUILD_DIR:-build}"
   log "Using source directory: ${SRC_DIR}"
-  [[ -n "${BIC_OVERWRITE:-}" ]] && set +o noclobber && log "Disabled 'noclobber' redirection overwrite protection"
+  [[ -n "${BIC_OVERWRITE:-}" ]] && set +o noclobber && warn "Disabled overwrite protection"
 
   # File system: what's missing and do we need to bail?
   [[ -d "${SRC_DIR}"/pages && -f "${SRC_DIR}"/page.html  ]] || warn "pages/ + page.html for pages"
