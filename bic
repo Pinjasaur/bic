@@ -108,9 +108,9 @@ mk_id() {
   if ! echo "${id:-}" | grep -Eq '^[[:digit:]]+$'; then
     fatal "Number prefix is required: ${1}"
   fi
-  local hashid
-  hashid="$("${__dir}"/lib/bashids -e -s "${SALT:-bic}" -l 28 "${id}")"
-  echo "${__base}_${hashid}"
+  local sqid
+  sqid="$("${__dir}"/lib/sqids -e -l 28 "${id}")"
+  echo "${__base}_${sqid}"
 }
 
 # --- The "line" between utility and core functions. ---
