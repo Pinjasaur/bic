@@ -9,7 +9,7 @@ blogs. View the [demo] or the [source].
 
 {% raw %}
 It uses [Pandoc] to convert plain Markdown files into HTML. They get templated
-{{[Mustache]}}-style with [Mo]. [Hashids] is used to generate IDs.
+{{[Mustache]}}-style with [Mo]. [Sqids] is used to generate IDs.
 {% endraw %}
 
 ## Basics
@@ -122,7 +122,6 @@ Optional, change if needed:
 - `BIC_OVERWRITE` (disable file overwrite protection, see [#caveats](#caveats), default: unset)
 - `BUILD_DIR` e.g., `_site` (configure output directory, default: `build`)
 - `DATE_FORMAT` e.g., `+%B %d, %Y` (passed into `date`, default: `+%F` &rarr; `YYYY-MM-DD`)
-- `SALT` e.g. `super-random-abcxyz` (used to seed the [Hashids] encoding, default: `bic`)
 - `TIMEZONE` e.g., `US/Central` (the [timezone] you're in, default: `US/Central`)
 
 ## Templating
@@ -135,7 +134,7 @@ Some specific keys used within entries (posts or drafts) and pages:
 - `slug`, to be used in URL (does _not_ contain the `.html` file extension)
 - `title`, taken from first line of file `# ...`
 - `date`, literally the `mtime` of the file
-- `id`, the number prefix for an _entry_ encoded with [Hashids]
+- `id`, the number prefix for an _entry_ encoded with [Sqids]
 - `body`, converted Markdown to HTML contents (sans title)
 - `tags`, list of all tags for the _entry_
 
@@ -193,7 +192,7 @@ Bash builtin `noclobber` e.g. `set -o noclobber` along with `--interactive` for
 [Pandoc]: https://pandoc.org/
 [Mustache]: https://mustache.github.io/mustache.5.html
 [Mo]: https://github.com/tests-always-included/mo
-[Hashids]: https://hashids.org/
+[Sqids]: https://sqids.org/
 [nix flake]: https://www.tweag.io/blog/2020-05-25-flakes
 [setting up flakes]: https://nixos.wiki/wiki/Flakes
 [double-underscore-prefixed]: https://paul.af/applying-hungarian-notation-to-mustache-partials
