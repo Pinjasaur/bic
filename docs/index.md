@@ -72,9 +72,9 @@ For a fully-featured example, view the [demo] source code: <https://github.com/P
 $ tree -F --dirsfirst
 .
 ├── drafts/
-│   └── 997-untitled.md
+│   └── 000-untitled.md
 ├── pages/
-│   └── about.md
+│   ├── about.md
 ├── posts/
 │   ├── 998-foo-bar.md
 │   └── 999-hello-world.md
@@ -87,6 +87,7 @@ $ tree -F --dirsfirst
 │       └── script.js
 ├── __feed.rss
 ├── __index.html
+├── __tag.html
 ├── _footer.html
 ├── _head.html
 ├── _header.html
@@ -95,7 +96,9 @@ $ tree -F --dirsfirst
 ├── index.html
 ├── page.html
 ├── robots.txt
-└── sitemap.xml
+├── sitemap.xml
+├── tag.html
+└── tags.html
 ```
 
 ## Config
@@ -129,14 +132,15 @@ Optional, change if needed:
 Anything listed above or added additionally to a `.env` will be available
 _globally_ within templates.
 
-Some specific keys used within entries (posts or drafts) and pages:
+Some specific keys used within entries (posts or drafts) and pages (except where
+noted):
 
 - `slug`, to be used in URL (does _not_ contain the `.html` file extension)
 - `title`, taken from first line of file `# ...`
 - `date`, literally the `mtime` of the file
-- `id`, the number prefix for an _entry_ encoded with [Sqids]
+- `id`, the number prefix for an _entry_ (_not_ page) encoded with [Sqids]
 - `body`, converted Markdown to HTML contents (sans title)
-- `tags`, list of all tags for the _entry_
+- `tags`, list of all tags for the _entry_ (_not_ page)
 
 Drafts will have a `draft` key set. Likewise, posts will have a `post` key set.
 
@@ -149,8 +153,8 @@ Each page in `pages/*.md` is rendered against a `page.html`.
 template partial of the same name e.g., `{{__index}}` from `__index.html`.
 {% endraw %}
 
-`tags.html` has access to an associative array of `all_tags` mapped to the
-number of entries tagged by that tag.
+`tags.html` has access to an associative array of `all_tags` where the keys are
+the tags themselves and the values are the number of entries tagged by that tag.
 
 `sitemap.xml` has access to an array of slugs with the `slugs` key.
 
