@@ -210,7 +210,7 @@ Bash builtin `noclobber` e.g. `set -o noclobber` along with `--interactive` for
 (async () => {
   const response = await fetch(`https://api.github.com/repos/pinjasaur/bic/releases`)
   const releases = await response.json()
-  document.querySelectorAll(`.js-release`).forEach($el => $el.textContent = releases[0].tag_name)
+  document.querySelectorAll(`.js-release`).forEach($el => $el.innerHTML = `<a href="${releases[0].html_url}" target="_blank">${releases[0].tag_name}</a>`)
   document.querySelectorAll(`code`).forEach($el => $el.innerHTML = $el.innerHTML.replace(`bic:latest`, `bic:${releases[0].tag_name.replace(/^v/, '')}`))
 })();
 </script>
