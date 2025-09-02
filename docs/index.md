@@ -185,6 +185,7 @@ Bash builtin `noclobber` e.g. `set -o noclobber` along with `--interactive` for
 - the demo: <https://demo.bic.sh/>
 - Mitch's blog: <https://fossen.dev/>
 - Evan's blog: <https://evanhstanton.github.io/>
+- Hayley's blog: <https://foxes.systems/>
 - you?
 
 ## Support
